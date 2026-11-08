@@ -1,5 +1,5 @@
 import { documents, type Status } from "@/data/documents";
-import { Label, PageHeader } from "../ui";
+import { Label, PageHeader, asset } from "../ui";
 
 const STATUS: Record<Status, string> = {
   done: "Done",
@@ -117,7 +117,7 @@ export function Documents() {
                           {p.note && ` · ${p.note}`}
                         </span>
                         {p.file && (
-                          <a href={p.file.url} download={p.file.label} className="font-mono text-xs underline underline-offset-4 hover:no-underline">
+                          <a href={asset(p.file.url)} download={p.file.label} className="font-mono text-xs underline underline-offset-4 hover:no-underline">
                             ↓ {p.file.label} ({p.file.size})
                           </a>
                         )}
@@ -147,7 +147,7 @@ export function Documents() {
                         {files.map((f) => (
                           <li key={f.url}>
                             <a
-                              href={f.url}
+                              href={asset(f.url)}
                               download={f.label}
                               className="flex items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-2.5 font-mono text-sm text-black hover:bg-white"
                             >

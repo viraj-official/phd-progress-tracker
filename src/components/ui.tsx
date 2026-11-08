@@ -3,6 +3,11 @@
 // Pastel fills used to colour-code objectives, supervisors etc. (see globals.css).
 export const pastels = ["bg-mint", "bg-sky", "bg-peach", "bg-lavender", "bg-butter", "bg-rose"];
 
+// Prefix a file path in public/ with the site's base path (GitHub Pages serves the
+// site from /phd-progress-tracker). External links are left unchanged.
+export const asset = (url: string) =>
+  url.startsWith("/") ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${url}` : url;
+
 export const container = "mx-auto w-full max-w-6xl px-5 sm:px-8";
 
 export function PageHeader({
@@ -57,7 +62,7 @@ export function Avatar({
       <div className={`blob card-2d absolute inset-0 overflow-hidden border-2 border-black ${color}`}>
         {src ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={src} alt={name} className="absolute inset-x-0 bottom-0 mx-auto h-[92%] w-auto max-w-none object-contain" />
+          <img src={asset(src)} alt={name} className="absolute inset-x-0 bottom-0 mx-auto h-[92%] w-auto max-w-none object-contain" />
         ) : (
           <span className={`flex h-full w-full items-center justify-center font-mono font-bold ${text}`}>{initials(name)}</span>
         )}

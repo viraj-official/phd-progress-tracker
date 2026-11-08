@@ -1,6 +1,6 @@
 import { supervisors, type Supervisor } from "@/data/phd";
 import { supervisorProfiles } from "@/data/supervisorProfiles";
-import { Avatar, Label, PageHeader, pastels } from "../ui";
+import { Avatar, Label, PageHeader, pastels, asset } from "../ui";
 import { Section } from "./Profile";
 
 type Props = { path: string[]; go: (p: string[]) => void };
@@ -45,7 +45,7 @@ export function Team({ path, go }: Props) {
                 </button>
                 {prof?.cv ? (
                   <a
-                    href={prof.cv.url}
+                    href={asset(prof.cv.url)}
                     download={prof.cv.label}
                     className="rounded-xl border border-black bg-lavender px-3 py-2.5 text-center text-black hover:bg-white hover:text-black"
                   >
@@ -175,7 +175,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
         <div className="shrink-0 md:w-56">
           {p?.cv ? (
             <a
-              href={p.cv.url}
+              href={asset(p.cv.url)}
               download={p.cv.label}
               className="flex items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-3 font-mono text-sm text-black hover:bg-white hover:text-black"
             >
