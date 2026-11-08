@@ -1,0 +1,333 @@
+import { supervisors, type Supervisor } from "@/data/phd";
+import { supervisorProfiles } from "@/data/supervisorProfiles";
+import { Avatar, Label, PageHeader, pastels } from "../ui";
+import { Section } from "./Profile";
+
+type Props = { path: string[]; go: (p: string[]) => void };
+
+export function Team({ path, go }: Props) {
+  const selected = supervisors.find((s) => s.slug === path[0]);
+  if (selected) return <SupervisorPage s={selected} back={() => go([])} />;
+
+  return (
+    <div>
+      <PageHeader
+        title="Supervisory panel"
+        description="Supervisors from the University of Sri Jayewardenepura and the National Hospital of Sri Lanka."
+        aside={`${supervisors.length} supervisors`}
+      />
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+        {supervisors.map((s, i) => {
+          const prof = supervisorProfiles[s.slug];
+          return (
+            <article key={s.name} className="card-2d flex flex-col rounded-xl border border-black bg-white p-6 sm:p-8">
+              <div className="flex items-center gap-4">
+                <Avatar name={s.name} src={s.photo} color={pastels[(i + 1) % 6]} size="h-16 w-16" text="text-lg" />
+                <div className="min-w-0">
+                  <Label>{s.role}</Label>
+                  <h3 className="mt-1 text-lg font-bold leading-snug">{s.name}</h3>
+                </div>
+              </div>
+
+              {s.position && <p className="mt-5 font-medium">{s.position}</p>}
+
+              <div className="mt-6 flex flex-1 flex-col">
+                <Contact s={s} />
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-2 font-mono text-xs">
+                <button
+                  onClick={() => go([s.slug])}
+                  className="rounded-xl border border-black bg-white px-3 py-2.5 hover:bg-lavender hover:text-black"
+                >
+                  View profile →
+                </button>
+                {prof?.cv ? (
+                  <a
+                    href={prof.cv.url}
+                    download={prof.cv.label}
+                    className="rounded-xl border border-black bg-lavender px-3 py-2.5 text-center text-black hover:bg-white hover:text-black"
+                  >
+                    ↓ Download CV
+                  </a>
+                ) : (
+                  <span className="border border-dashed border-neutral-400 px-3 py-2.5 text-center text-neutral-500">
+                    CV coming soon
+                  </span>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function Contact({ s }: { s: Supervisor }) {
+  return (
+    <dl className="mt-auto space-y-3 border-t border-neutral-300 pt-5 text-sm">
+      <div>
+        <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">Email</dt>
+        <dd className="mt-0.5">
+          <a href={`mailto:${s.email}`} className="break-all underline underline-offset-4 hover:no-underline">
+            {s.email}
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">Phone</dt>
+        <dd className="mt-0.5">
+          <a href={`tel:${s.phone.replace(/\s/g, "")}`} className="underline underline-offset-4 hover:no-underline">
+            {s.phone}
+          </a>
+        </dd>
+      </div>
+    </dl>
+  );
+}
+
+function Cell({ label, children, wide }: { label: string; children: React.ReactNode; wide?: boolean }) {
+  return (
+    <div className={`bg-white p-4 sm:p-5 ${wide ? "sm:col-span-2" : ""}`}>
+      <p className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">{label}</p>
+      <div className="mt-1.5 text-[15px] leading-relaxed">{children}</div>
+    </div>
+  );
+}
+
+const tel = (n: string) => `tel:${n.replace(/\s|Ext\..*$/g, "")}`;
+
+function ContactPanel({
+  s,
+  office,
+  home,
+  homeAddress,
+}: {
+  s: Supervisor;
+  office?: string;
+  home?: string;
+  homeAddress?: string[];
+}) {
+  const phones = [
+    { label: "Mobile", n: s.phone },
+    ...(office ? [{ label: "Office", n: office }] : []),
+    ...(home ? [{ label: "Home", n: home }] : []),
+  ];
+  return (
+    <section>
+      <h3 className="text-lg font-bold">Contact</h3>
+      <div className="mt-4 grid gap-px overflow-hidden rounded-xl border border-black bg-black sm:grid-cols-2 lg:grid-cols-4">
+        <Cell label="Email">
+          <a href={`mailto:${s.email}`} className="break-all underline underline-offset-4 hover:no-underline">
+            {s.email}
+          </a>
+        </Cell>
+        {phones.map((ph) => (
+          <Cell key={ph.label} label={`${ph.label} phone`}>
+            <a href={tel(ph.n)} className="hover:underline">
+              {ph.n}
+            </a>
+          </Cell>
+        ))}
+        <Cell label="Work address" wide>
+          {s.address.map((l) => (
+            <span key={l} className="block">
+              {l}
+            </span>
+          ))}
+        </Cell>
+        {homeAddress && (
+          <Cell label="Home address" wide>
+            {homeAddress.map((l) => (
+              <span key={l} className="block">
+                {l}
+              </span>
+            ))}
+          </Cell>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
+  const p = supervisorProfiles[s.slug];
+
+  return (
+    <div className="space-y-12">
+      <button onClick={back} className="font-mono text-xs uppercase tracking-wider hover:underline">
+        ← All supervisors
+      </button>
+
+      {/* intro */}
+      <section className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+          <Avatar name={s.name} src={s.photo} color={pastels[(supervisors.indexOf(s) + 1) % 6]} />
+          <div className="min-w-0">
+            <Label>{s.role}</Label>
+            <h2 className="mt-2 text-2xl font-bold leading-tight tracking-tight sm:text-3xl">{p?.fullName ?? s.name}</h2>
+            <p className="mt-2 text-lg text-neutral-700">{p?.headline ?? s.position ?? s.address[0]}</p>
+          </div>
+        </div>
+
+        <div className="shrink-0 md:w-56">
+          {p?.cv ? (
+            <a
+              href={p.cv.url}
+              download={p.cv.label}
+              className="flex items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-3 font-mono text-sm text-black hover:bg-white hover:text-black"
+            >
+              <span>↓ Download CV</span>
+              <span className="text-xs opacity-70">{p.cv.size}</span>
+            </a>
+          ) : (
+            <p className="border border-dashed border-neutral-400 px-4 py-3 text-center font-mono text-xs text-neutral-500">
+              CV coming soon
+            </p>
+          )}
+        </div>
+      </section>
+
+      <ContactPanel s={s} office={p?.officePhone} home={p?.homePhone} homeAddress={p?.homeAddress} />
+
+      {!p ? (
+        <div className="border border-dashed border-black px-6 py-16 text-center text-neutral-600">
+          Full profile and CV will be added soon.
+        </div>
+      ) : (
+        <>
+          {p.general && (
+            <Section n="01" title="General information">
+              <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+                {p.general.map((g) => (
+                  <div key={g.label} className="border-b border-neutral-200 pb-3">
+                    <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">{g.label}</dt>
+                    <dd className="mt-1 text-[15px]">{g.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Section>
+          )}
+
+          <Section n="02" title="Qualifications">
+            <ul className="space-y-4">
+              {p.qualifications.map((q) => (
+                <li key={q.title} className="grid gap-1 sm:grid-cols-[5rem_1fr]">
+                  <span className="font-mono text-sm text-neutral-500">{q.year}</span>
+                  <span>
+                    <span className="font-bold">{q.title}</span>
+                    {q.detail && <span className="mt-1 block text-sm leading-relaxed text-neutral-600">{q.detail}</span>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Section>
+
+          <Section n="03" title="Memberships">
+            <div className="flex flex-wrap gap-2">
+              {p.memberships.map((m) => (
+                <span key={m} className="rounded-xl border border-black bg-white px-3 py-1 text-sm">
+                  {m}
+                </span>
+              ))}
+            </div>
+          </Section>
+
+          <Section n="04" title="Publications & presentations">
+            <div className="space-y-8">
+              {p.publications.map((g) => (
+                <div key={g.session}>
+                  <Label>{g.session}</Label>
+                  <ul className="mt-3 space-y-3">
+                    {g.items.map((it) => (
+                      <li key={it.title} className="border-l-2 border-black pl-4">
+                        <p className="text-[15px] leading-relaxed">{it.title}</p>
+                        {it.authors && <p className="mt-0.5 text-sm italic text-neutral-500">{it.authors}</p>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Section n="05" title="Workshops attended">
+            <ul className="divide-y divide-neutral-200 border-y border-neutral-200">
+              {p.workshops.map((w) => (
+                <li key={w.title} className="grid gap-1 py-3 sm:grid-cols-[5rem_1fr]">
+                  <span className="font-mono text-sm text-neutral-500">{w.year}</span>
+                  <span className="text-[15px]">{w.title}</span>
+                </li>
+              ))}
+            </ul>
+          </Section>
+
+          <Section n="06" title="Teaching">
+            <ul className="list-disc space-y-2 pl-5 text-[15px] leading-relaxed">
+              {p.teaching.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </Section>
+
+          <Section n="07" title="Other activities & service">
+            <ul className="list-disc space-y-2 pl-5 text-[15px] leading-relaxed">
+              {p.activities.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <Label>Voluntary service</Label>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed">
+                {p.service.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </div>
+          </Section>
+
+          {p.hobbies && (
+            <Section n="08" title="Hobbies">
+              <div className="flex flex-wrap gap-2">
+                {p.hobbies.map((h) => (
+                  <span key={h} className="border border-neutral-300 px-3 py-1 text-sm">
+                    {h}
+                  </span>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {p.referees && (
+            <Section n="09" title="Referees">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {p.referees.map((r) => (
+                  <div key={r.name} className="rounded-xl border border-black bg-white p-5">
+                    <p className="font-bold">{r.name}</p>
+                    {r.lines.map((l) => (
+                      <p key={l} className="text-sm text-neutral-600">
+                        {l}
+                      </p>
+                    ))}
+                    <div className="mt-3 space-y-0.5 border-t border-neutral-200 pt-3 text-sm">
+                      {r.email && (
+                        <a href={`mailto:${r.email}`} className="block break-all underline underline-offset-4 hover:no-underline">
+                          {r.email}
+                        </a>
+                      )}
+                      {r.phones.map((ph) => (
+                        <p key={ph}>{ph}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+        </>
+      )}
+    </div>
+  );
+}

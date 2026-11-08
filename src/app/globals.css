@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Pastel 2D theme: soft ink instead of black, warm paper instead of white,
+   and flat pastel fills. Changing these values recolours the whole site. */
+@theme {
+  --color-black: #2f2b3a;
+  --color-white: #fffdf8;
+  --color-neutral-50: #faf6ef;
+  --color-neutral-100: #f3eee5;
+  --color-neutral-200: #e7e1d6;
+  --color-neutral-300: #d6cfc2;
+  --color-neutral-400: #b0a898;
+  --color-neutral-500: #7d7568;
+  --color-neutral-600: #625b50;
+  --color-neutral-700: #4a443c;
+
+  --color-lavender: #ddd3f7;
+  --color-mint: #c9eedb;
+  --color-sky: #cde4f8;
+  --color-peach: #fddcc8;
+  --color-butter: #fcefb4;
+  --color-rose: #f9d3df;
+  --color-cream: #f3ecdf;
+}
+
+:root {
+  --nav-h: 3.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-black);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 3px;
+}
+
+/* diagonal hatch for "planned" bars */
+.hatch {
+  background-image: repeating-linear-gradient(45deg, var(--color-black) 0 1px, transparent 1px 5px);
+}
+
+/* hide scrollbar on the tab strip but keep it scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* flat "2D" card: ink outline with a hard offset shadow, no blur */
+.card-2d {
+  box-shadow: 4px 4px 0 var(--color-black);
+}
+
+/* animated pastel blob behind profile pictures */
+.blob {
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+  animation: blob-morph 9s ease-in-out infinite;
+}
+@keyframes blob-morph {
+  0%, 100% { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; }
+  33% { border-radius: 63% 37% 41% 59% / 55% 62% 38% 45%; }
+  66% { border-radius: 38% 62% 52% 48% / 62% 38% 62% 38%; }
+}
+.float {
+  animation: float-y 5s ease-in-out infinite;
+}
+@keyframes float-y {
+  50% { transform: translateY(-6px) rotate(-1.5deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blob, .float { animation: none; }
 }
