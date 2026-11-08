@@ -116,28 +116,50 @@ export function Documents() {
                           {STATUS[p.status]}
                           {p.note && ` · ${p.note}`}
                         </span>
+                        {p.file && (
+                          <a href={p.file.url} download={p.file.label} className="font-mono text-xs underline underline-offset-4 hover:no-underline">
+                            ↓ {p.file.label} ({p.file.size})
+                          </a>
+                        )}
                       </span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* download */}
+              {/* files */}
               <div className="md:col-span-2 lg:col-span-1">
-                {d.file ? (
-                  <a
-                    href={d.file.url}
-                    download={d.file.label}
-                    className="flex items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-3 font-mono text-sm text-black hover:bg-white hover:text-black"
-                  >
-                    <span>↓ Download PDF</span>
-                    <span className="text-xs opacity-70">{d.file.size}</span>
-                  </a>
-                ) : (
-                  <p className="border border-dashed border-neutral-400 px-4 py-3 text-center font-mono text-xs text-neutral-500">
-                    Download available when finished
-                  </p>
-                )}
+                {(() => {
+                  const files = [
+                    ...(d.files ?? []),
+                    ...d.parts.filter((p) => p.file).map((p) => ({ ...p.file!, name: p.file!.name ?? p.name })),
+                  ];
+                  if (!files.length)
+                    return (
+                      <p className="rounded-xl border border-dashed border-neutral-400 px-4 py-3 text-center font-mono text-xs text-neutral-500">
+                        Download available when finished
+                      </p>
+                    );
+                  return (
+                    <div>
+                      <Label>Files ({files.length})</Label>
+                      <ul className="mt-2 space-y-2">
+                        {files.map((f) => (
+                          <li key={f.url}>
+                            <a
+                              href={f.url}
+                              download={f.label}
+                              className="flex items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-2.5 font-mono text-sm text-black hover:bg-white"
+                            >
+                              <span className="min-w-0">↓ {f.name ?? "Download PDF"}</span>
+                              <span className="shrink-0 text-xs opacity-70">{f.size}</span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })()}
               </div>
             </li>
           );

@@ -38,7 +38,7 @@ export function Profile() {
     <div className="space-y-12">
       {/* intro */}
       <section className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
-        <Avatar name={p.name} src="/img/viraj-cartoon.png" color="bg-rose" size="h-36 w-36 sm:h-44 sm:w-44" />
+        <Avatar name={p.name} src="/img/viraj.png" color="bg-rose" size="h-36 w-36 sm:h-44 sm:w-44" />
         <div className="min-w-0">
           <Label>My profile</Label>
           <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{p.name}</h2>

@@ -1,11 +1,15 @@
 // PhD documents at USJ (Faculty of Graduate Studies) and their status.
 // status: "done" = finished, "waiting" = submitted / waiting on someone else,
 //         "progress" = being worked on, "pending" = not started yet.
-// Put finished files in public/docs/ and set `file` so they can be downloaded.
+// A document can have several files (e.g. application + approval letter) and each
+// part can have its own file (e.g. one chapter of the progress review).
+// Put files in public/docs/ (and keep the original in the PhD folder).
 
 export type Status = "done" | "waiting" | "progress" | "pending";
 
-export type DocPart = { name: string; status: Status; note?: string };
+export type DocFile = { url: string; label: string; size: string; name?: string };
+
+export type DocPart = { name: string; status: Status; note?: string; file?: DocFile };
 
 export type PhdDocument = {
   id: string;
@@ -15,7 +19,7 @@ export type PhdDocument = {
   statusText: string; // short label shown on the card
   date?: string; // YYYY-MM-DD (last status change, or due date with dateLabel "Due"); used for newest-first order
   dateLabel?: string; // e.g. "Due"
-  file?: { url: string; label: string; size: string };
+  files?: DocFile[];
   parts: DocPart[];
 };
 
@@ -27,7 +31,9 @@ export const documents: PhdDocument[] = [
     status: "done",
     statusText: "Completed",
     date: "2026-11-04",
-    file: { url: "/docs/PhD_Proposal_Viraj_Sameera.pdf", label: "PhD_Proposal_Viraj_Sameera.pdf", size: "1.4 MB" },
+    files: [
+      { name: "Research proposal", url: "/docs/PhD_Proposal_Viraj_Sameera.pdf", label: "PhD_Proposal_Viraj_Sameera.pdf", size: "1.4 MB" },
+    ],
     parts: [
       { name: "Proposal document", status: "done" },
       { name: "Application form & supporting documents", status: "done" },
@@ -45,12 +51,20 @@ export const documents: PhdDocument[] = [
     status: "waiting",
     statusText: "Waiting for approval",
     date: "2026-11-10",
+    files: [
+      {
+        name: "Request application",
+        url: "/docs/KDU_Ethics_Application_Viraj_Sameera.pdf",
+        label: "KDU_Ethics_Application_Viraj_Sameera.pdf",
+        size: "516 KB",
+      },
+    ],
     parts: [
       { name: "Application form (Parts I–III)", status: "done" },
       { name: "Ethics considerations annex", status: "done" },
       { name: "Information sheets & consent forms", status: "done" },
       { name: "Submitted to KDU ethics committee", status: "done", note: "10 Nov 2026" },
-      { name: "KDU ethics approval", status: "waiting" },
+      { name: "KDU ethics approval", status: "waiting", note: "Approval document will be added here" },
     ],
   },
   {
@@ -70,15 +84,19 @@ export const documents: PhdDocument[] = [
   {
     id: "progress-review-1",
     title: "First Progress Review",
-    description: "First progress review of the PhD.",
+    description:
+      "First progress review report. Each part is written separately, sent to the supervisors for review and approved before it is added to the full report.",
     status: "progress",
     statusText: "In progress",
     dateLabel: "Due",
     date: "2027-05-10",
     parts: [
-      { name: "Research methodology", status: "progress", note: "Currently working on" },
-      { name: "Collecting research papers for the methodology", status: "progress", note: "Currently working on" },
-      { name: "Progress review report", status: "pending" },
+      { name: "Introduction", status: "progress", note: "Draft being written" },
+      { name: "Literature review", status: "progress", note: "Collecting and reviewing papers" },
+      { name: "Research methodology", status: "progress", note: "Draft being written" },
+      { name: "Preliminary work & results", status: "pending" },
+      { name: "Work plan & timeline", status: "pending" },
+      { name: "Full report (all approved parts)", status: "pending" },
       { name: "Presentation to review panel", status: "pending" },
     ],
   },
