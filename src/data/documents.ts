@@ -64,8 +64,8 @@ export const documents: PhdDocument[] = [
       { name: "Clinician forms · Sinhala", url: "/docs/KDU_Ethics_Appendix_3B-3E_Sinhala.pdf", label: "KDU_Ethics_Appendix_3B-3E_Sinhala.pdf", size: "529 KB" },
       { name: "Clinician forms · Tamil", url: "/docs/KDU_Ethics_Appendix_3B-3E_Tamil.pdf", label: "KDU_Ethics_Appendix_3B-3E_Tamil.pdf", size: "501 KB" },
       { name: "Short CV (PI)", url: "/docs/CV_KH_Viraj_Sameera_Short.pdf", label: "CV_KH_Viraj_Sameera_Short.pdf", size: "213 KB" },
-      { name: "Short CV · Dr. WMKS Ilmini", url: "/docs/CV_Short_Dr_WMKS_Ilmini.pdf", label: "CV_Short_Dr_WMKS_Ilmini.pdf", size: "209 KB" },
-      { name: "Short CV · Dr. WGCW Kumara", url: "/docs/CV_Short_Dr_WGCW_Kumara.pdf", label: "CV_Short_Dr_WGCW_Kumara.pdf", size: "224 KB" },
+      { name: "CV · Dr. WMKS Ilmini (signed)", url: "/docs/CV_Signed_Dr_WMKS_Ilmini.pdf", label: "CV_Signed_Dr_WMKS_Ilmini.pdf", size: "233 KB" },
+      { name: "CV · Dr. WGCW Kumara (signed)", url: "/docs/CV_Signed_Dr_WGCW_Kumara.pdf", label: "CV_Signed_Dr_WGCW_Kumara.pdf", size: "208 KB" },
       { name: "Complete set (print copy)", url: "/docs/KDU_Ethics_Complete_Submission_Set.pdf", label: "KDU_Ethics_Complete_Submission_Set.pdf", size: "4.5 MB" },
     ],
     parts: [

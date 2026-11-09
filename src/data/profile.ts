@@ -114,21 +114,21 @@ export const profile = {
   wishlist: [
     {
       id: "cv-ilmini",
-      item: "Signed and dated short CV",
+      item: "Signed and dated CV",
       from: "Dr. WMKS Ilmini",
       status: "received",
-      why: "Full CV received on 09 Nov 2026. The short CV for the KDU ethics application was pre-filled from it and signed and dated on 09 Nov 2026.",
+      why: "Full CV received on 09 Nov 2026. This CV is used in the KDU ethics application, signed and dated on 09 Nov 2026.",
       link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
-      file: { label: "CV_Short_Dr_WMKS_Ilmini.pdf", url: "/docs/CV_Short_Dr_WMKS_Ilmini.pdf", size: "209 KB" },
+      file: { label: "CV_Signed_Dr_WMKS_Ilmini.pdf", url: "/docs/CV_Signed_Dr_WMKS_Ilmini.pdf", size: "233 KB" },
     },
     {
       id: "cv-kumara",
-      item: "Signed and dated short CV",
+      item: "Signed and dated CV",
       from: "Dr. WGCW (Chinthaka) Kumara",
       status: "received",
-      why: "Full CV received on 09 Nov 2026. The short CV for the KDU ethics application was pre-filled from it and signed and dated on 09 Nov 2026.",
+      why: "Full CV received on 09 Nov 2026. This CV is used in the KDU ethics application, signed and dated on 09 Nov 2026.",
       link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
-      file: { label: "CV_Short_Dr_WGCW_Kumara.pdf", url: "/docs/CV_Short_Dr_WGCW_Kumara.pdf", size: "224 KB" },
+      file: { label: "CV_Signed_Dr_WGCW_Kumara.pdf", url: "/docs/CV_Signed_Dr_WGCW_Kumara.pdf", size: "208 KB" },
     },
     {
       id: "cv-attanayake",
