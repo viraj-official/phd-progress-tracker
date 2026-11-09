@@ -1,5 +1,6 @@
 import { documents, type Status } from "@/data/documents";
 import { Label, PageHeader, asset } from "../ui";
+import { ShareLink, slug } from "../deeplink";
 
 const STATUS: Record<Status, string> = {
   done: "Done",
@@ -72,6 +73,7 @@ export function Documents() {
           return (
             <li
               key={d.id}
+              data-anchor={`documents/${d.id}`}
               className="grid gap-6 rounded-xl border border-black bg-white p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_13rem]"
             >
               {/* title + status */}
@@ -91,6 +93,7 @@ export function Documents() {
                   </div>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-neutral-600">{d.description}</p>
+                <ShareLink to={`documents/${d.id}`} label="Copy link to this document" className="mt-4" />
               </div>
 
               {/* checklist */}
@@ -145,15 +148,16 @@ export function Documents() {
                       <Label>Files ({files.length})</Label>
                       <ul className="mt-2 space-y-2">
                         {files.map((f) => (
-                          <li key={f.url}>
+                          <li key={f.url} data-anchor={`documents/${d.id}/${slug(f.label)}`} className="flex items-stretch gap-1.5">
                             <a
                               href={asset(f.url)}
                               download={f.label}
-                              className="flex items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-2.5 font-mono text-sm text-black hover:bg-white"
+                              className="flex min-w-0 flex-1 items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-2.5 font-mono text-sm text-black hover:bg-white"
                             >
                               <span className="min-w-0">↓ {f.name ?? "Download PDF"}</span>
                               <span className="shrink-0 text-xs opacity-70">{f.size}</span>
                             </a>
+                            <ShareLink to={`documents/${d.id}/${slug(f.label)}`} label="" className="px-2" />
                           </li>
                         ))}
                       </ul>

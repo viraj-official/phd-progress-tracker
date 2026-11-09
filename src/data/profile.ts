@@ -2,10 +2,22 @@
 
 export type Item = { title: string; place: string; period: string; note?: string };
 
+// Wish list: things I need from other people. status: "needed" = not asked yet,
+// "requested" = asked and waiting, "received" = done.
+export type Wish = {
+  id: string; // used in the share link: #profile/wishlist/<id>
+  item: string;
+  from: string;
+  status: "needed" | "requested" | "received";
+  why?: string;
+  link?: { label: string; to: string }; // a page or part of this site, e.g. "documents/ethics-kdu"
+  file?: { label: string; url: string; size: string };
+};
+
 export const profile = {
   name: "KH Viraj Sameera",
   fullName: "Kaluhennadige Viraj Sameera",
-  headline: "PhD Candidate · Visiting Lecturer · Researcher",
+  headline: "PhD Candidate · Lecturer · Researcher",
   email: "virajofficialinfo@gmail.com",
   phone: "+94 77 581 6789",
   location: "Dehiwala-Mount Lavinia, Sri Lanka",
@@ -20,9 +32,9 @@ export const profile = {
   ] as Item[],
 
   academic: [
+    { title: "Coordinator cum Lecturer — IT", place: "BCAS Campus (British College of Applied Studies), Colombo", period: "Apr – Oct 2026" },
     { title: "Visiting Lecturer — HND in Accountancy", place: "Advanced Technological Institute, Dehiwala (SLIATE)", period: "2026 – present" },
     { title: "Visiting Lecturer — Database Implementation", place: "University of Vocational Technology", period: "2025 – present" },
-    { title: "Coordinator cum Lecturer — IT", place: "BCAS Campus (British College of Applied Studies), Colombo", period: "Apr – Oct 2026" },
     { title: "Temporary Instructor — Dept. of Computer Science", place: "General Sir John Kotelawala Defence University (KDU)", period: "2024 – 2026" },
     { title: "Visiting Lecturer — Dept. of Information Technology", place: "ICBT Campus, Colombo", period: "2024 – 2025" },
     { title: "Visiting Lecturer — Pearson HND in Computing", place: "Study World Lanka Campus", period: "Dec 2024 – Mar 2025" },
@@ -98,6 +110,43 @@ export const profile = {
       { title: "Diploma in English Language", issuer: "British Way English Academy, Matara", date: "2013" },
     ] },
   ],
+
+  wishlist: [
+    {
+      id: "cv-ilmini",
+      item: "Short signed and dated CV",
+      from: "Dr. WMKS Ilmini",
+      status: "needed",
+      why: "Required for the KDU ethics application (all investigators must attach a short signed CV). A template in the required layout is ready: please fill in the [brackets], sign and date.",
+      link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
+      file: { label: "CV_Template_Dr_WMKS_Ilmini.docx", url: "/docs/CV_Template_Dr_WMKS_Ilmini.docx", size: "37 KB" },
+    },
+    {
+      id: "cv-kumara",
+      item: "Short signed and dated CV",
+      from: "Dr. WGCW (Chinthaka) Kumara",
+      status: "needed",
+      why: "Required for the KDU ethics application (all investigators must attach a short signed CV). A template in the required layout is ready: please fill in the [brackets], sign and date.",
+      link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
+      file: { label: "CV_Template_Dr_WGCW_Kumara.docx", url: "/docs/CV_Template_Dr_WGCW_Kumara.docx", size: "37 KB" },
+    },
+    {
+      id: "cv-attanayake",
+      item: "Signature and date on CV",
+      from: "Dr. AM Deepal K Attanayake",
+      status: "needed",
+      why: "The CV is already in the application; it only needs to be signed and dated.",
+      link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
+    },
+    {
+      id: "signatures-coi",
+      item: "Signature on Part I, section 9.4 (conflict of interest declaration)",
+      from: "Dr. WMKS Ilmini, Dr. WGCW Kumara and Dr. AM Deepal K Attanayake",
+      status: "needed",
+      why: "Every investigator must sign individually; unsigned forms are treated as incomplete.",
+      link: { label: "Application (Part I)", to: "documents/ethics-kdu/kdu-ethics-application-viraj-sameera" },
+    },
+  ] as Wish[],
 
   memberships: [
     { title: "Member — Sri Lanka Association for Artificial Intelligence (SLAAI)", since: "2024" },

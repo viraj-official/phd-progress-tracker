@@ -1,5 +1,6 @@
 import { meetings, type Meeting } from "@/data/logbook";
 import { Label, PageHeader } from "../ui";
+import { ShareLink } from "../deeplink";
 
 const fmt = (d: string) =>
   new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -21,7 +22,7 @@ function List({ title, items }: { title: string; items: string[] }) {
 function MeetingCard({ m, n, open }: { m: Meeting; n: number; open: boolean }) {
   const openActions = m.actions.filter((a) => !a.done).length;
   return (
-    <details open={open} className="group rounded-xl border border-black bg-white">
+    <details open={open} data-anchor={`logbook/meeting-${n}`} className="group rounded-xl border border-black bg-white">
       <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 p-5 sm:p-6 [&::-webkit-details-marker]:hidden">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-wider text-neutral-500">
@@ -33,6 +34,7 @@ function MeetingCard({ m, n, open }: { m: Meeting; n: number; open: boolean }) {
           <p className="mt-1 text-sm text-neutral-600">{m.topics.join(" · ")}</p>
         </div>
         <div className="flex items-center gap-4 font-mono text-xs">
+          <ShareLink to={`logbook/meeting-${n}`} label="" className="px-2" />
           {m.actions.length > 0 && (
             <span className={openActions ? "" : "text-neutral-500"}>
               {openActions ? `${openActions} open action${openActions > 1 ? "s" : ""}` : "All actions done"}
@@ -118,8 +120,11 @@ export function LogBook() {
       </div>
 
       {open.length > 0 && (
-        <section className="mt-10">
-          <h3 className="text-lg font-bold">Open action items</h3>
+        <section data-anchor="logbook/actions" className="mt-10">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h3 className="text-lg font-bold">Open action items</h3>
+            <ShareLink to="logbook/actions" />
+          </div>
           <ul className="mt-4 divide-y divide-neutral-200 border-y border-neutral-200">
             {open.map((a) => (
               <li key={a.from + a.task} className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import data from "@/data/papers.json";
 import { objectives } from "@/data/phd";
 import { pastels, asset } from "../ui";
@@ -71,7 +72,7 @@ const METHOD_FIELDS: [keyof Paper, string][] = [
   ["availability", "Code / data availability"],
 ];
 
-type Props = { path: string[]; go: (p: string[]) => void };
+type Props = { path: string[]; go: (p: string[]) => void; embedded?: boolean };
 
 const PAGE_SIZE = 6;
 
@@ -86,22 +87,29 @@ function pageList(page: number, pages: number): number[] {
   return out;
 }
 
-export function PaperBank({ path, go }: Props) {
+export function PaperBank({ path, go, embedded }: Props) {
+  const [onlyBase, setOnlyBase] = useState(false);
   const group = groups.find((g) => g.id === path[0]) ?? groups[0];
   const index = group.papers.findIndex((p) => p.id === path[1]);
 
   if (index >= 0) return <PaperReader group={group} index={index} go={go} />;
 
   // list URL: #papers/O1 or #papers/O1/page/2
-  const pages = Math.max(1, Math.ceil(group.papers.length / PAGE_SIZE));
+  const list = onlyBase ? group.papers.filter((p) => p.base) : group.papers;
+  const baseCount = group.papers.filter((p) => p.base).length;
+  const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const page = Math.min(Math.max(path[1] === "page" ? Number(path[2]) || 1 : 1, 1), pages);
-  const shown = group.papers.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const shown = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const goPage = (n: number) => go(n === 1 ? [group.id] : [group.id, "page", String(n)]);
 
   return (
     <div>
       {/* sticky title + objective selector */}
-      <div className="sticky top-[var(--nav-h)] z-20 -mx-5 -mt-10 border-b border-black bg-white px-5 pt-6 pb-4 sm:-mx-8 sm:-mt-14 sm:px-8 sm:pt-8">
+      <div
+        className={`sticky top-[var(--nav-h)] z-20 -mx-5 border-b border-black bg-white px-5 pt-6 pb-4 sm:-mx-8 sm:px-8 sm:pt-8 ${
+          embedded ? "" : "-mt-10 sm:-mt-14"
+        }`}
+      >
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <h2 className="text-xl font-bold tracking-tight sm:text-3xl">Research Paper Bank</h2>
           <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">{total} papers</span>
@@ -133,23 +141,53 @@ export function PaperBank({ path, go }: Props) {
         </div>
       </div>
 
-      <div className="mt-8 mb-6 flex flex-wrap items-baseline justify-between gap-2">
+      <div className="mt-8 mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
         <p className="leading-relaxed text-neutral-600">{group.heading}</p>
-        <p className="font-mono text-xs text-neutral-500">
-          {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, group.papers.length)} of {group.papers.length}
-        </p>
+        <div className="flex flex-wrap items-center gap-4">
+          {group.id !== "BASE" && (
+            <label className="flex cursor-pointer items-center gap-2 font-mono text-xs uppercase tracking-wider">
+              <button
+                type="button"
+                role="switch"
+                aria-checked={onlyBase}
+                onClick={() => {
+                  setOnlyBase((v) => !v);
+                  if (page > 1) go([group.id]);
+                }}
+                className={`relative h-6 w-11 shrink-0 rounded-full border border-black transition-colors ${onlyBase ? "bg-butter" : "bg-neutral-200"}`}
+              >
+                <span
+                  className={`absolute top-0.5 left-0.5 h-[18px] w-[18px] rounded-full border border-black bg-white transition-transform ${
+                    onlyBase ? "translate-x-5" : ""
+                  }`}
+                />
+              </button>
+              Only base papers ({baseCount})
+            </label>
+          )}
+          <p className="font-mono text-xs text-neutral-500">
+            {list.length ? `${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, list.length)} of ${list.length}` : "0 papers"}
+          </p>
+        </div>
       </div>
+      {!list.length && (
+        <p className="rounded-xl border border-dashed border-neutral-400 p-10 text-center text-neutral-500">
+          No base papers in this objective yet.
+        </p>
+      )}
       <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
         {shown.map((p) => (
           <button
             key={p.id}
             onClick={() => go([group.id, p.id])}
-            className="flex min-w-0 flex-col rounded-xl border border-black bg-white p-5 text-left break-words transition-colors hover:bg-lavender hover:text-black sm:p-6"
+            className={`flex min-w-0 flex-col rounded-xl border border-black p-5 text-left break-words transition-colors hover:bg-lavender hover:text-black sm:p-6 ${
+              p.base ? "card-2d bg-butter" : "bg-white"
+            }`}
           >
             <div className="flex items-center justify-between font-mono text-xs">
               <span className="font-bold">{p.id}</span>
               <span className="flex items-center gap-2">
-                {p.base && <span className="rounded-full border border-black bg-butter px-2 py-0.5 font-bold">★ Base</span>}
+                {p.base && <span className="rounded-full border border-black bg-white px-2 py-0.5 font-bold">★ Base</span>}
                 <span className="opacity-60">{p.year}</span>
               </span>
             </div>

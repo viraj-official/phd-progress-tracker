@@ -86,3 +86,27 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .blob, .float { animation: none; }
 }
+
+/* deep-link targets: stop below the sticky nav, and flash when opened from a shared link */
+[data-anchor] {
+  scroll-margin-top: calc(var(--nav-h) + 1.25rem);
+}
+.anchor-hit {
+  outline: 3px solid var(--color-black);
+  outline-offset: 6px;
+  border-radius: 0.75rem;
+  animation: anchor-glow 1.6s ease-out 3;
+}
+@keyframes anchor-glow {
+  0% { box-shadow: 0 0 0 0 var(--color-butter); }
+  40% { box-shadow: 0 0 0 14px var(--color-butter); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .anchor-hit { animation: none; box-shadow: 0 0 0 10px var(--color-butter); }
+}
+
+/* copy-link buttons are hidden unless switched on in the ⚙ settings menu */
+html:not([data-share="on"]) .share-link {
+  display: none !important;
+}

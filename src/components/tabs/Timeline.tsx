@@ -1,5 +1,6 @@
 import { currentMonth, phd, timeline } from "@/data/phd";
 import { PageHeader } from "../ui";
+import { ShareLink } from "../deeplink";
 
 export function Timeline() {
   const total = phd.durationMonths;
@@ -16,13 +17,16 @@ export function Timeline() {
       {/* phone: one card per task */}
       <ul className="space-y-3 md:hidden">
         {timeline.map((t) => (
-          <li key={t.id} className="rounded-xl border border-black bg-white p-4">
+          <li key={t.id} data-anchor={`timeline/${t.id}`} className="rounded-xl border border-black bg-white p-4">
             <div className="flex items-baseline justify-between gap-3">
               <p className="font-bold leading-snug">
                 <span className="mr-2 font-mono font-normal text-neutral-500">{t.id}</span>
                 {t.name}
               </p>
-              <span className="shrink-0 font-mono text-sm">{t.progress}%</span>
+              <span className="flex shrink-0 items-center gap-2 font-mono text-sm">
+                {t.progress}%
+                <ShareLink to={`timeline/${t.id}`} label="" className="px-2" />
+              </span>
             </div>
             <p className="mt-1 font-mono text-xs text-neutral-500">
               Month {t.start} – {t.end}
@@ -54,10 +58,11 @@ export function Timeline() {
           </div>
 
           {timeline.map((t) => (
-            <div key={t.id} className="grid grid-cols-[20rem_1fr] border-b border-neutral-200 last:border-b-0">
+            <div key={t.id} data-anchor={`timeline/${t.id}`} className="grid grid-cols-[20rem_1fr] border-b border-neutral-200 last:border-b-0">
               <div className="flex items-center gap-3 px-4 py-3 text-sm">
                 <span className="w-7 shrink-0 font-mono text-neutral-500">{t.id}</span>
-                <span>{t.name}</span>
+                <span className="min-w-0 flex-1">{t.name}</span>
+                <ShareLink to={`timeline/${t.id}`} label="" className="px-2" />
               </div>
               <div className="relative min-h-14 border-l border-black">
                 <div className="absolute inset-y-0 left-1/3 border-l border-neutral-200" />

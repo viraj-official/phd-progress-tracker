@@ -2,6 +2,7 @@ import { supervisors, type Supervisor } from "@/data/phd";
 import { supervisorProfiles } from "@/data/supervisorProfiles";
 import { Avatar, Label, PageHeader, pastels, asset } from "../ui";
 import { Section } from "./Profile";
+import { ShareLink } from "../deeplink";
 
 type Props = { path: string[]; go: (p: string[]) => void };
 
@@ -57,6 +58,7 @@ export function Team({ path, go }: Props) {
                   </span>
                 )}
               </div>
+              <ShareLink to={`supervisors/${s.slug}`} label="Copy profile link" className="mt-3 self-start" />
             </article>
           );
         })}
@@ -101,11 +103,13 @@ const tel = (n: string) => `tel:${n.replace(/\s|Ext\..*$/g, "")}`;
 
 function ContactPanel({
   s,
+  anchor,
   office,
   home,
   homeAddress,
 }: {
   s: Supervisor;
+  anchor: string;
   office?: string;
   home?: string;
   homeAddress?: string[];
@@ -116,8 +120,11 @@ function ContactPanel({
     ...(home ? [{ label: "Home", n: home }] : []),
   ];
   return (
-    <section>
-      <h3 className="text-lg font-bold">Contact</h3>
+    <section data-anchor={anchor}>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="text-lg font-bold">Contact</h3>
+        <ShareLink to={anchor} />
+      </div>
       <div className="mt-4 grid gap-px overflow-hidden rounded-xl border border-black bg-black sm:grid-cols-2 lg:grid-cols-4">
         <Cell label="Email">
           <a href={`mailto:${s.email}`} className="break-all underline underline-offset-4 hover:no-underline">
@@ -154,12 +161,16 @@ function ContactPanel({
 
 function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
   const p = supervisorProfiles[s.slug];
+  const base = `supervisors/${s.slug}`;
 
   return (
     <div className="space-y-12">
-      <button onClick={back} className="font-mono text-xs uppercase tracking-wider hover:underline">
-        ← All supervisors
-      </button>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <button onClick={back} className="font-mono text-xs uppercase tracking-wider hover:underline">
+          ← All supervisors
+        </button>
+        <ShareLink to={base} label="Copy profile link" />
+      </div>
 
       {/* intro */}
       <section className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
@@ -172,7 +183,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
           </div>
         </div>
 
-        <div className="shrink-0 md:w-56">
+        <div data-anchor={`${base}/cv`} className="shrink-0 space-y-2 md:w-56">
           {p?.cv ? (
             <a
               href={asset(p.cv.url)}
@@ -187,10 +198,11 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
               CV coming soon
             </p>
           )}
+          <ShareLink to={`${base}/cv`} label="Copy CV link" />
         </div>
       </section>
 
-      <ContactPanel s={s} office={p?.officePhone} home={p?.homePhone} homeAddress={p?.homeAddress} />
+      <ContactPanel s={s} anchor={`${base}/contact`} office={p?.officePhone} home={p?.homePhone} homeAddress={p?.homeAddress} />
 
       {!p ? (
         <div className="border border-dashed border-black px-6 py-16 text-center text-neutral-600">
@@ -199,7 +211,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
       ) : (
         <>
           {p.general && (
-            <Section n="01" title="General information">
+            <Section n="01" title="General information" anchor={`${base}/general`}>
               <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
                 {p.general.map((g) => (
                   <div key={g.label} className="border-b border-neutral-200 pb-3">
@@ -211,7 +223,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
             </Section>
           )}
 
-          <Section n="02" title="Qualifications">
+          <Section n="02" title="Qualifications" anchor={`${base}/qualifications`}>
             <ul className="space-y-4">
               {p.qualifications.map((q) => (
                 <li key={q.title} className="grid gap-1 sm:grid-cols-[5rem_1fr]">
@@ -225,7 +237,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
             </ul>
           </Section>
 
-          <Section n="03" title="Memberships">
+          <Section n="03" title="Memberships" anchor={`${base}/memberships`}>
             <div className="flex flex-wrap gap-2">
               {p.memberships.map((m) => (
                 <span key={m} className="rounded-xl border border-black bg-white px-3 py-1 text-sm">
@@ -235,7 +247,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
             </div>
           </Section>
 
-          <Section n="04" title="Publications & presentations">
+          <Section n="04" title="Publications & presentations" anchor={`${base}/publications`}>
             <div className="space-y-8">
               {p.publications.map((g) => (
                 <div key={g.session}>
@@ -253,7 +265,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
             </div>
           </Section>
 
-          <Section n="05" title="Workshops attended">
+          <Section n="05" title="Workshops attended" anchor={`${base}/workshops`}>
             <ul className="divide-y divide-neutral-200 border-y border-neutral-200">
               {p.workshops.map((w) => (
                 <li key={w.title} className="grid gap-1 py-3 sm:grid-cols-[5rem_1fr]">
@@ -264,7 +276,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
             </ul>
           </Section>
 
-          <Section n="06" title="Teaching">
+          <Section n="06" title="Teaching" anchor={`${base}/teaching`}>
             <ul className="list-disc space-y-2 pl-5 text-[15px] leading-relaxed">
               {p.teaching.map((t) => (
                 <li key={t}>{t}</li>
@@ -272,7 +284,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
             </ul>
           </Section>
 
-          <Section n="07" title="Other activities & service">
+          <Section n="07" title="Other activities & service" anchor={`${base}/activities`}>
             <ul className="list-disc space-y-2 pl-5 text-[15px] leading-relaxed">
               {p.activities.map((t) => (
                 <li key={t}>{t}</li>
@@ -289,7 +301,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
           </Section>
 
           {p.hobbies && (
-            <Section n="08" title="Hobbies">
+            <Section n="08" title="Hobbies" anchor={`${base}/hobbies`}>
               <div className="flex flex-wrap gap-2">
                 {p.hobbies.map((h) => (
                   <span key={h} className="border border-neutral-300 px-3 py-1 text-sm">
@@ -301,7 +313,7 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
           )}
 
           {p.referees && (
-            <Section n="09" title="Referees">
+            <Section n="09" title="Referees" anchor={`${base}/referees`}>
               <div className="grid gap-4 sm:grid-cols-2">
                 {p.referees.map((r) => (
                   <div key={r.name} className="rounded-xl border border-black bg-white p-5">

@@ -1,12 +1,24 @@
-import { profile, type Item } from "@/data/profile";
-import { Avatar, Label } from "../ui";
+import { profile, type Item, type Wish } from "@/data/profile";
+import { Avatar, Label, asset } from "../ui";
+import { ShareLink } from "../deeplink";
 
-export function Section({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
+export function Section({
+  n,
+  title,
+  anchor,
+  children,
+}: {
+  n: string;
+  title: string;
+  anchor?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section className="grid gap-5 border-t border-black pt-8 md:grid-cols-[12rem_1fr] md:gap-10">
+    <section data-anchor={anchor} className="grid gap-5 border-t border-black pt-8 md:grid-cols-[12rem_1fr] md:gap-10">
       <div>
         <p className="font-mono text-sm text-neutral-400">{n}</p>
         <h3 className="mt-1 text-lg font-bold">{title}</h3>
+        {anchor && <ShareLink to={anchor} className="mt-3" />}
       </div>
       <div className="min-w-0">{children}</div>
     </section>
@@ -31,13 +43,70 @@ function Timeline({ items }: { items: Item[] }) {
   );
 }
 
+const WISH_STATUS: Record<Wish["status"], { text: string; cls: string }> = {
+  needed: { text: "Needed", cls: "bg-rose" },
+  requested: { text: "Requested · waiting", cls: "bg-butter" },
+  received: { text: "Received", cls: "bg-mint" },
+};
+
+function WishList({ items }: { items: Wish[] }) {
+  const open = items.filter((w) => w.status !== "received").length;
+  return (
+    <div>
+      <p className="text-[15px] text-neutral-700">
+        Things I need from others to move the PhD forward. {open} still open.
+      </p>
+      <ul className="mt-5 space-y-4">
+        {items.map((w) => {
+          const st = WISH_STATUS[w.status];
+          return (
+            <li key={w.id} data-anchor={`profile/wishlist/${w.id}`} className="rounded-xl border border-black bg-white p-5">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className={`font-bold leading-snug ${w.status === "received" ? "text-neutral-500 line-through" : ""}`}>{w.item}</p>
+                  <p className="mt-0.5 text-sm text-neutral-600">From: {w.from}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`rounded-xl border border-black px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider ${st.cls}`}>
+                    {st.text}
+                  </span>
+                  <ShareLink to={`profile/wishlist/${w.id}`} label="" className="px-2" />
+                </div>
+              </div>
+              {w.why && <p className="mt-3 text-sm leading-relaxed text-neutral-600">{w.why}</p>}
+              {(w.link || w.file) && (
+                <div className="mt-4 flex flex-wrap gap-2 font-mono text-xs">
+                  {w.file && (
+                    <a
+                      href={asset(w.file.url)}
+                      download={w.file.label}
+                      className="rounded-xl border border-black bg-lavender px-3 py-2 text-black hover:bg-white"
+                    >
+                      ↓ {w.file.label} ({w.file.size})
+                    </a>
+                  )}
+                  {w.link && (
+                    <a href={`#${w.link.to}`} className="rounded-xl border border-black bg-white px-3 py-2 hover:bg-lavender">
+                      {w.link.label} →
+                    </a>
+                  )}
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 export function Profile() {
   const p = profile;
 
   return (
     <div className="space-y-12">
       {/* intro */}
-      <section className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+      <section data-anchor="profile/about" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
         <Avatar name={p.name} src="/img/viraj-cartoon.png" color="bg-rose" size="h-36 w-36 sm:h-44 sm:w-44" />
         <div className="min-w-0">
           <Label>My profile</Label>
@@ -51,15 +120,20 @@ export function Profile() {
             <a href={`tel:${p.phone.replace(/\s/g, "")}`} className="rounded-xl border border-black bg-white px-4 py-2 hover:bg-lavender hover:text-black">
               ☎ {p.phone}
             </a>
+            <ShareLink to="profile/about" label="Copy profile link" />
           </div>
         </div>
       </section>
 
-      <Section n="01" title="Education">
+      <Section n="01" title="Wish list" anchor="profile/wishlist">
+        <WishList items={p.wishlist} />
+      </Section>
+
+      <Section n="02" title="Education" anchor="profile/education">
         <Timeline items={p.education} />
       </Section>
 
-      <Section n="02" title="Experience">
+      <Section n="03" title="Experience" anchor="profile/experience">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <Label>Academic</Label>
@@ -76,7 +150,7 @@ export function Profile() {
         </div>
       </Section>
 
-      <Section n="03" title="Research & publications">
+      <Section n="04" title="Research & publications" anchor="profile/publications">
         <div className="space-y-8">
           {p.publications.map((g) => (
             <div key={g.group}>
@@ -94,7 +168,7 @@ export function Profile() {
         </div>
       </Section>
 
-      <Section n="04" title="Skills">
+      <Section n="05" title="Skills" anchor="profile/skills">
         <div className="grid gap-4 sm:grid-cols-2">
           {p.skills.map((g) => (
             <div key={g.group} className="rounded-xl border border-black bg-white p-5">
@@ -111,7 +185,7 @@ export function Profile() {
         </div>
       </Section>
 
-      <Section n="05" title="Achievements">
+      <Section n="06" title="Achievements" anchor="profile/achievements">
         <ul className="grid gap-4 sm:grid-cols-2">
           {p.achievements.map((a) => (
             <li key={a.title} className="rounded-xl border border-black bg-white p-5">
@@ -125,7 +199,7 @@ export function Profile() {
         </ul>
       </Section>
 
-      <Section n="06" title="Certificates">
+      <Section n="07" title="Certificates" anchor="profile/certificates">
         <div className="space-y-8">
           {p.certificates.map((g) => (
             <div key={g.group}>
@@ -146,7 +220,7 @@ export function Profile() {
         </div>
       </Section>
 
-      <Section n="07" title="Memberships & service">
+      <Section n="08" title="Memberships & service" anchor="profile/memberships">
         <Label>Professional memberships</Label>
         <ul className="mt-3 space-y-2">
           {p.memberships.map((m) => (
