@@ -34,6 +34,8 @@ FIELDS = {
     "Link (DOI / arXiv)": "link",
     "PDF in Papers Folder": "pdf",
     "Open Access": "openAccess",
+    "Base Paper": "base",
+    "Notes": "notes",
     "Full Text Read": "fullText",
     "Detailed Methodology (How They Used the Method)": "methodologyDetail",
     "Study Design & Setting": "studyDesign",

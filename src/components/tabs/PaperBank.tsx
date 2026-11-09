@@ -19,6 +19,8 @@ type Paper = {
   pdf: string;
   pdfUrl: string;
   openAccess?: string;
+  base?: string;
+  notes?: string;
   fullText?: string;
   methodologyDetail?: string;
   studyDesign?: string;
@@ -34,9 +36,17 @@ type Paper = {
 };
 type Group = { id: string; folder: string; heading: string; papers: Paper[] };
 
-const groups = data as Group[];
-const total = groups.reduce((n, g) => n + g.papers.length, 0);
-const shortName = (id: string) => objectives.find((o) => o.id === id)?.short ?? "";
+const objectiveGroups = data as Group[];
+const total = objectiveGroups.reduce((n, g) => n + g.papers.length, 0);
+// Extra tab listing the base papers (the main papers this PhD builds on) from every objective.
+const baseGroup: Group = {
+  id: "BASE",
+  folder: "00_Base_Papers",
+  heading: "Base papers: the main papers this PhD builds on, across all four objectives.",
+  papers: objectiveGroups.flatMap((g) => g.papers.filter((p) => p.base)),
+};
+const groups = [...objectiveGroups, baseGroup];
+const shortName = (id: string) => (id === "BASE" ? "Base papers" : objectives.find((o) => o.id === id)?.short ?? "");
 
 const DETAIL_FIELDS: [keyof Paper, string][] = [
   ["aim", "Aim of the paper"],
@@ -100,7 +110,7 @@ export function PaperBank({ path, go }: Props) {
           Core papers for each objective, with review notes. Choose a paper to read its notes and the PDF.
         </p>
 
-        <div className="mt-4 grid grid-cols-4 gap-2 sm:gap-3">
+        <div className="mt-4 grid grid-cols-5 gap-2 sm:gap-3">
           {groups.map((g, gi) => {
             const on = g.id === group.id;
             return (
@@ -113,7 +123,7 @@ export function PaperBank({ path, go }: Props) {
                 }`}
               >
                 <span className="flex flex-wrap items-baseline justify-between gap-x-2 font-mono text-sm font-bold">
-                  {g.id}
+                  {g.id === "BASE" ? "★ Base" : g.id}
                   <span className="text-xs font-normal opacity-60">{g.papers.length}</span>
                 </span>
                 <span className="mt-1 hidden text-sm leading-snug opacity-80 md:block">{shortName(g.id)}</span>
@@ -138,7 +148,10 @@ export function PaperBank({ path, go }: Props) {
           >
             <div className="flex items-center justify-between font-mono text-xs">
               <span className="font-bold">{p.id}</span>
-              <span className="opacity-60">{p.year}</span>
+              <span className="flex items-center gap-2">
+                {p.base && <span className="rounded-full border border-black bg-butter px-2 py-0.5 font-bold">★ Base</span>}
+                <span className="opacity-60">{p.year}</span>
+              </span>
             </div>
             <p className="mt-3 text-[17px] font-bold leading-snug">{p.title}</p>
             <p className="mt-2 line-clamp-1 text-xs opacity-60">{p.authors}</p>
@@ -240,6 +253,12 @@ function PaperReader({ group, index, go }: { group: Group; index: number; go: (p
           <h1 className="mt-3 text-2xl font-bold leading-tight">{p.title}</h1>
           <p className="mt-3 text-sm leading-relaxed text-neutral-600">{p.authors}</p>
           <p className="mt-1 text-sm italic text-neutral-600">{p.venue}</p>
+          {p.base && (
+            <p className="mt-3 inline-block rounded-full border border-black bg-butter px-3 py-1 font-mono text-xs font-bold">
+              ★ {p.base}
+            </p>
+          )}
+          {p.notes && <p className="mt-2 text-sm text-neutral-600">Note: {p.notes}</p>}
 
           <div className="mt-6 flex flex-wrap gap-2 font-mono text-sm">
             {p.pdfUrl && (
