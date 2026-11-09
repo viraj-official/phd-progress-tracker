@@ -27,6 +27,7 @@ export type Supervisor = {
 export const supervisors: Supervisor[] = [
   {
     slug: "ilmini",
+    photo: "/img/ilmini.png",
     role: "Principal Supervisor",
     name: "Dr. WMKS Ilmini",
     address: [
@@ -40,6 +41,7 @@ export const supervisors: Supervisor[] = [
   },
   {
     slug: "kumara",
+    photo: "/img/kumara.png",
     role: "Co-Supervisor",
     name: "Dr. WGCW Kumara",
     address: [
@@ -53,6 +55,7 @@ export const supervisors: Supervisor[] = [
   },
   {
     slug: "attanayake",
+    photo: "/img/attanayake.png",
     role: "Co-Supervisor (Clinical)",
     name: "Dr. AM Deepal K Attanayake",
     position: "Consultant Neurosurgeon",
