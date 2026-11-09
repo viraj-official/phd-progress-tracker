@@ -162,6 +162,10 @@ function ContactPanel({
 function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
   const p = supervisorProfiles[s.slug];
   const base = `supervisors/${s.slug}`;
+  // Sections are numbered in the order they appear; empty ones are skipped.
+  let count = 0;
+  const n = () => String(++count).padStart(2, "0");
+  const has = (a?: unknown[]) => !!a && a.length > 0;
 
   return (
     <div className="space-y-12">
@@ -210,10 +214,34 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
         </div>
       ) : (
         <>
-          {p.general && (
-            <Section n="01" title="General information" anchor={`${base}/general`}>
+          {(p.summary || has(p.researchAreas) || has(p.links)) && (
+            <Section n={n()} title="Profile" anchor={`${base}/profile`}>
+              {p.summary && <p className="max-w-3xl text-[15px] leading-relaxed text-neutral-700">{p.summary}</p>}
+              {has(p.researchAreas) && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {p.researchAreas!.map((r) => (
+                    <span key={r} className="rounded-full border border-black bg-mint px-3 py-1 text-sm">
+                      {r}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {has(p.links) && (
+                <div className="mt-4 flex flex-wrap gap-2 font-mono text-xs">
+                  {p.links!.map((l) => (
+                    <a key={l.url} href={l.url} target="_blank" rel="noreferrer" className="rounded-xl border border-black bg-white px-3 py-1.5 hover:bg-lavender">
+                      {l.label} ↗
+                    </a>
+                  ))}
+                </div>
+              )}
+            </Section>
+          )}
+
+          {has(p.general) && (
+            <Section n={n()} title="General information" anchor={`${base}/general`}>
               <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
-                {p.general.map((g) => (
+                {p.general!.map((g) => (
                   <div key={g.label} className="border-b border-neutral-200 pb-3">
                     <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">{g.label}</dt>
                     <dd className="mt-1 text-[15px]">{g.value}</dd>
@@ -223,7 +251,24 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
             </Section>
           )}
 
-          <Section n="02" title="Qualifications" anchor={`${base}/qualifications`}>
+          {has(p.appointments) && (
+            <Section n={n()} title="Experience" anchor={`${base}/experience`}>
+              <ol className="ml-1.5 border-l-2 border-black">
+                {p.appointments!.map((a) => (
+                  <li key={a.period + a.title} className="relative pb-5 pl-6 last:pb-0">
+                    <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 border-black bg-white" />
+                    <p className="font-mono text-xs text-neutral-500">{a.period}</p>
+                    <p className="mt-0.5 font-bold leading-snug">{a.title}</p>
+                    <p className="text-sm text-neutral-600">{a.place}</p>
+                    {a.note && <p className="mt-1 text-sm italic text-neutral-500">{a.note}</p>}
+                  </li>
+                ))}
+              </ol>
+            </Section>
+          )}
+
+          {has(p.qualifications) && (
+          <Section n={n()} title="Qualifications" anchor={`${base}/qualifications`}>
             <ul className="space-y-4">
               {p.qualifications.map((q) => (
                 <li key={q.title} className="grid gap-1 sm:grid-cols-[5rem_1fr]">
@@ -236,8 +281,26 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
               ))}
             </ul>
           </Section>
+          )}
 
-          <Section n="03" title="Memberships" anchor={`${base}/memberships`}>
+          {has(p.awards) && (
+            <Section n={n()} title="Awards & distinctions" anchor={`${base}/awards`}>
+              <ul className="space-y-4">
+                {p.awards!.map((a) => (
+                  <li key={a.year + a.title} className="grid gap-1 sm:grid-cols-[5rem_1fr]">
+                    <span className="font-mono text-sm text-neutral-500">{a.year}</span>
+                    <span>
+                      <span className="font-bold">{a.title}</span>
+                      {a.detail && <span className="mt-1 block text-sm leading-relaxed text-neutral-600">{a.detail}</span>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+          )}
+
+          {has(p.memberships) && (
+          <Section n={n()} title="Memberships" anchor={`${base}/memberships`}>
             <div className="flex flex-wrap gap-2">
               {p.memberships.map((m) => (
                 <span key={m} className="rounded-xl border border-black bg-white px-3 py-1 text-sm">
@@ -246,8 +309,10 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
               ))}
             </div>
           </Section>
+          )}
 
-          <Section n="04" title="Publications & presentations" anchor={`${base}/publications`}>
+          {has(p.publications) && (
+          <Section n={n()} title="Publications & presentations" anchor={`${base}/publications`}>
             <div className="space-y-8">
               {p.publications.map((g) => (
                 <div key={g.session}>
@@ -264,8 +329,10 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
               ))}
             </div>
           </Section>
+          )}
 
-          <Section n="05" title="Workshops attended" anchor={`${base}/workshops`}>
+          {has(p.workshops) && (
+          <Section n={n()} title="Workshops attended" anchor={`${base}/workshops`}>
             <ul className="divide-y divide-neutral-200 border-y border-neutral-200">
               {p.workshops.map((w) => (
                 <li key={w.title} className="grid gap-1 py-3 sm:grid-cols-[5rem_1fr]">
@@ -275,21 +342,26 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
               ))}
             </ul>
           </Section>
+          )}
 
-          <Section n="06" title="Teaching" anchor={`${base}/teaching`}>
+          {has(p.teaching) && (
+          <Section n={n()} title="Teaching" anchor={`${base}/teaching`}>
             <ul className="list-disc space-y-2 pl-5 text-[15px] leading-relaxed">
               {p.teaching.map((t) => (
                 <li key={t}>{t}</li>
               ))}
             </ul>
           </Section>
+          )}
 
-          <Section n="07" title="Other activities & service" anchor={`${base}/activities`}>
+          {(has(p.activities) || has(p.service)) && (
+          <Section n={n()} title="Other activities & service" anchor={`${base}/activities`}>
             <ul className="list-disc space-y-2 pl-5 text-[15px] leading-relaxed">
               {p.activities.map((t) => (
                 <li key={t}>{t}</li>
               ))}
             </ul>
+            {has(p.service) && (
             <div className="mt-8">
               <Label>Voluntary service</Label>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed">
@@ -298,12 +370,14 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
                 ))}
               </ul>
             </div>
+            )}
           </Section>
+          )}
 
-          {p.hobbies && (
-            <Section n="08" title="Hobbies" anchor={`${base}/hobbies`}>
+          {has(p.hobbies) && (
+            <Section n={n()} title="Hobbies" anchor={`${base}/hobbies`}>
               <div className="flex flex-wrap gap-2">
-                {p.hobbies.map((h) => (
+                {p.hobbies!.map((h) => (
                   <span key={h} className="border border-neutral-300 px-3 py-1 text-sm">
                     {h}
                   </span>
@@ -312,10 +386,10 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
             </Section>
           )}
 
-          {p.referees && (
-            <Section n="09" title="Referees" anchor={`${base}/referees`}>
+          {has(p.referees) && (
+            <Section n={n()} title="Referees" anchor={`${base}/referees`}>
               <div className="grid gap-4 sm:grid-cols-2">
-                {p.referees.map((r) => (
+                {p.referees!.map((r) => (
                   <div key={r.name} className="rounded-xl border border-black bg-white p-5">
                     <p className="font-bold">{r.name}</p>
                     {r.lines.map((l) => (

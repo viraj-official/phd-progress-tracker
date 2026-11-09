@@ -5,8 +5,11 @@ export const pastels = ["bg-mint", "bg-sky", "bg-peach", "bg-lavender", "bg-butt
 
 // Prefix a file path in public/ with the site's base path (GitHub Pages serves the
 // site from /phd-progress-tracker). External links are left unchanged.
+// The build id is appended so a new deploy always serves fresh files (no stale cache).
 export const asset = (url: string) =>
-  url.startsWith("/") ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${url}` : url;
+  url.startsWith("/")
+    ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${url}${url.includes("?") ? "&" : "?"}v=${process.env.NEXT_PUBLIC_BUILD_ID ?? ""}`
+    : url;
 
 export const container = "mx-auto w-full max-w-6xl px-5 sm:px-8";
 

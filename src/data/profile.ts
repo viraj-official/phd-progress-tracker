@@ -114,21 +114,21 @@ export const profile = {
   wishlist: [
     {
       id: "cv-ilmini",
-      item: "Short signed and dated CV",
+      item: "Check, sign and date the pre-filled short CV",
       from: "Dr. WMKS Ilmini",
       status: "needed",
-      why: "Required for the KDU ethics application (all investigators must attach a short signed CV). A template in the required layout is ready: please fill in the [brackets], sign and date.",
+      why: "Full CV received on 09 Nov 2026, and the short CV for the KDU ethics application has been pre-filled from it. Please check it, confirm any research-ethics / GCP training (the one remaining [bracket]), then sign and date.",
       link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
-      file: { label: "CV_Template_Dr_WMKS_Ilmini.docx", url: "/docs/CV_Template_Dr_WMKS_Ilmini.docx", size: "37 KB" },
+      file: { label: "CV_Short_Dr_WMKS_Ilmini.docx", url: "/docs/CV_Short_Dr_WMKS_Ilmini.docx", size: "38 KB" },
     },
     {
       id: "cv-kumara",
-      item: "Short signed and dated CV",
+      item: "Check, sign and date the pre-filled short CV",
       from: "Dr. WGCW (Chinthaka) Kumara",
       status: "needed",
-      why: "Required for the KDU ethics application (all investigators must attach a short signed CV). A template in the required layout is ready: please fill in the [brackets], sign and date.",
+      why: "Full CV received on 09 Nov 2026, and the short CV for the KDU ethics application has been pre-filled from it. Please check it, confirm any research-ethics / GCP training (the one remaining [bracket]), then sign and date.",
       link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
-      file: { label: "CV_Template_Dr_WGCW_Kumara.docx", url: "/docs/CV_Template_Dr_WGCW_Kumara.docx", size: "37 KB" },
+      file: { label: "CV_Short_Dr_WGCW_Kumara.docx", url: "/docs/CV_Short_Dr_WGCW_Kumara.docx", size: "38 KB" },
     },
     {
       id: "cv-attanayake",
