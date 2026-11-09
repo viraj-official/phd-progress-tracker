@@ -65,6 +65,17 @@ type Props = { path: string[]; go: (p: string[]) => void };
 
 const PAGE_SIZE = 6;
 
+// Page numbers to show: first, last and the pages next to the current one; 0 marks a gap.
+function pageList(page: number, pages: number): number[] {
+  const keep = new Set([1, pages, page - 1, page, page + 1].filter((n) => n >= 1 && n <= pages));
+  const out: number[] = [];
+  [...keep].sort((a, b) => a - b).forEach((n, i, arr) => {
+    if (i > 0 && n - arr[i - 1] > 1) out.push(0);
+    out.push(n);
+  });
+  return out;
+}
+
 export function PaperBank({ path, go }: Props) {
   const group = groups.find((g) => g.id === path[0]) ?? groups[0];
   const index = group.papers.findIndex((p) => p.id === path[1]);
@@ -141,7 +152,7 @@ export function PaperBank({ path, go }: Props) {
       </div>
 
       {pages > 1 && (
-        <nav aria-label="Pages" className="mt-10 flex items-center justify-center gap-2 font-mono text-sm">
+        <nav aria-label="Pages" className="mt-10 flex flex-wrap items-center justify-center gap-2 font-mono text-sm">
           <button
             onClick={() => goPage(page - 1)}
             disabled={page === 1}
@@ -149,7 +160,12 @@ export function PaperBank({ path, go }: Props) {
           >
             ← Prev
           </button>
-          {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+          {pageList(page, pages).map((n, i) =>
+            n === 0 ? (
+              <span key={`gap${i}`} className="px-1 text-neutral-500">
+                …
+              </span>
+            ) : (
             <button
               key={n}
               onClick={() => goPage(n)}
@@ -158,7 +174,8 @@ export function PaperBank({ path, go }: Props) {
             >
               {n}
             </button>
-          ))}
+            ),
+          )}
           <button
             onClick={() => goPage(page + 1)}
             disabled={page === pages}

@@ -134,6 +134,16 @@ export type Update = {
 // Shown newest first (sorted by date automatically).
 export const updates: Update[] = [
   {
+    date: "2026-11-09",
+    title: "Literature collection expanded to 298 papers",
+    tag: "Progress",
+    items: [
+      "Searched for papers from 2021 onwards for all four objectives, excluding predatory journals: 246 new papers added (O1 73, O2 62, O3 65, O4 46), 298 in total.",
+      "Started extracting the research methodology of every paper in detail (datasets, sample sizes, preprocessing, model settings, training values, evaluation and results). Done for 75 papers so far (O1); the rest are pending.",
+      "157 PDFs are in the Papers folders; a download list was made for the papers that are not downloaded yet.",
+    ],
+  },
+  {
     date: "2026-11-07",
     title: "Progress tracker website set up",
     tag: "Progress",
