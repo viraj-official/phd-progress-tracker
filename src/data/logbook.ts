@@ -31,7 +31,7 @@ export const meetings: Meeting[] = [
       "After KDU approval, the ethics application will be submitted to the University of Sri Jayewardenepura as well.",
     ],
     actions: [
-      { task: "Submit KDU ethics application", owner: "Viraj", due: "2026-11-10", done: true },
+      { task: "Submit KDU ethics application", owner: "Viraj", due: "2026-11-10", done: false },
       { task: "Submit USJ ethics application after KDU approval", owner: "Viraj", done: false },
     ],
   },

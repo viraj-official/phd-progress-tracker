@@ -71,9 +71,9 @@ export const supervisors: Supervisor[] = [
 
 // The headline shown in the top bar.
 export const latestUpdate = {
-  date: "2026-11-08",
+  date: "2026-11-09",
   phase: "Preparing first progress review",
-  text: "Proposal completed. KDU ethics application submitted on 10 Nov 2026 and waiting for approval; the USJ ethics application will be submitted after KDU approval. Currently working on the research methodology and collecting research papers for the first progress review (due 10 May 2027).",
+  text: "Proposal completed. KDU ethics application finalised and signed by all investigators on 09 Nov 2026; to be submitted on 10 Nov 2026 after the REC fee is paid. The USJ ethics application follows after KDU approval. Literature: 298 papers collected, methodology extracted for 259. Next: research methodology and introduction for the first progress review (due 10 May 2027).",
 };
 
 export type Objective = { id: string; short: string; text: string; rq: string };
@@ -115,8 +115,8 @@ export type Task = {
 
 // Approximate months — adjust to match the Gantt chart in the proposal.
 export const timeline: Task[] = [
-  { id: "1.1", name: "Literature review & proposal", start: 1, end: 6, progress: 30 },
-  { id: "1.2", name: "Ethics application & approval", start: 1, end: 6, progress: 5 },
+  { id: "1.1", name: "Literature review & proposal", start: 1, end: 6, progress: 60 },
+  { id: "1.2", name: "Ethics application & approval", start: 1, end: 6, progress: 40 },
   { id: "2.0", name: "WP1 · Registry platform & data pipeline", start: 4, end: 12, progress: 0 },
   { id: "3.0", name: "Data collection, annotation & QC", start: 6, end: 30, progress: 0 },
   { id: "3.1", name: "WP2 · MRI perception baselines & calibration", start: 7, end: 18, progress: 0 },
@@ -138,12 +138,23 @@ export type Update = {
 export const updates: Update[] = [
   {
     date: "2026-11-09",
-    title: "Literature collection expanded to 298 papers",
+    title: "Literature collection: methodology extracted for 259 of 298 papers",
     tag: "Progress",
     items: [
-      "Searched for papers from 2021 onwards for all four objectives, excluding predatory journals: 246 new papers added (O1 73, O2 62, O3 65, O4 46), 298 in total.",
-      "Started extracting the research methodology of every paper in detail (datasets, sample sizes, preprocessing, model settings, training values, evaluation and results). Done for 75 papers so far (O1); the rest are pending.",
-      "157 PDFs are in the Papers folders; a download list was made for the papers that are not downloaded yet.",
+      "Searched for papers from 2021 onwards for all four objectives, excluding predatory journals: 298 papers in total.",
+      "Detailed research methodology (datasets, sample sizes, preprocessing, model settings, training values, evaluation and results) extracted from the full text for 259 papers: O1 85/85, O2 66/75, O3 70/79, O4 38/59.",
+      "249 PDFs are in the Papers folders; 49 papers still need a PDF (lists in each objective folder). Open-access PDFs can be opened from the Research Paper Bank.",
+      "14 base papers identified and copied to the base papers folder.",
+    ],
+  },
+  {
+    date: "2026-11-09",
+    title: "KDU ethics application finalised",
+    tag: "Milestone",
+    items: [
+      "All four investigators signed and dated the application (Part I, section 9.4); PI signed Part III.",
+      "Supervisors' own CVs used in the application, signed and dated 09 Nov 2026.",
+      "Complete print copy (107 pages) and soft-copy zip prepared. Remaining: REC fee payment slip, then submission on 10 Nov 2026.",
     ],
   },
   {
