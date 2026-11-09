@@ -5,7 +5,7 @@ export type Item = { title: string; place: string; period: string; note?: string
 // Wish list: things I need from other people. status: "needed" = not asked yet,
 // "requested" = asked and waiting, "received" = done.
 export type Wish = {
-  id: string; // used in the share link: #profile/wishlist/<id>
+  id: string; // used in the share link: #supervisors/wishlist/<id>
   item: string;
   from: string;
   status: "needed" | "requested" | "received";
@@ -112,41 +112,6 @@ export const profile = {
   ],
 
   wishlist: [
-    {
-      id: "cv-ilmini",
-      item: "Signed and dated CV",
-      from: "Dr. WMKS Ilmini",
-      status: "received",
-      why: "Full CV received on 09 Nov 2026. This CV is used in the KDU ethics application, signed and dated on 09 Nov 2026.",
-      link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
-      file: { label: "CV_Signed_Dr_WMKS_Ilmini.pdf", url: "/docs/CV_Signed_Dr_WMKS_Ilmini.pdf", size: "233 KB" },
-    },
-    {
-      id: "cv-kumara",
-      item: "Signed and dated CV",
-      from: "Dr. WGCW (Chinthaka) Kumara",
-      status: "received",
-      why: "Full CV received on 09 Nov 2026. This CV is used in the KDU ethics application, signed and dated on 09 Nov 2026.",
-      link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
-      file: { label: "CV_Signed_Dr_WGCW_Kumara.pdf", url: "/docs/CV_Signed_Dr_WGCW_Kumara.pdf", size: "208 KB" },
-    },
-    {
-      id: "cv-attanayake",
-      item: "Signed and dated CV",
-      from: "Dr. AM Deepal K Attanayake",
-      status: "received",
-      why: "Signed and dated on 09 Nov 2026; used in the KDU ethics application.",
-      link: { label: "KDU ethics application files", to: "documents/ethics-kdu" },
-      file: { label: "CV_Signed_Dr_AMDK_Attanayake.pdf", url: "/docs/CV_Signed_Dr_AMDK_Attanayake.pdf", size: "419 KB" },
-    },
-    {
-      id: "signatures-coi",
-      item: "Signature on Part I, section 9.4 (conflict of interest declaration)",
-      from: "Dr. WMKS Ilmini, Dr. WGCW Kumara and Dr. AM Deepal K Attanayake",
-      status: "received",
-      why: "All investigators signed and dated the declaration on 09 Nov 2026.",
-      link: { label: "Application (Part I)", to: "documents/ethics-kdu/kdu-ethics-application-viraj-sameera" },
-    },
   ] as Wish[],
 
   memberships: [

@@ -1,7 +1,8 @@
 import { supervisors, type Supervisor } from "@/data/phd";
 import { supervisorProfiles } from "@/data/supervisorProfiles";
 import { Avatar, Label, PageHeader, pastels, asset } from "../ui";
-import { Section } from "./Profile";
+import { Section, WishList } from "./Profile";
+import { profile } from "@/data/profile";
 import { ShareLink } from "../deeplink";
 
 type Props = { path: string[]; go: (p: string[]) => void };
@@ -63,6 +64,14 @@ export function Team({ path, go }: Props) {
           );
         })}
       </div>
+
+      {profile.wishlist.some((w) => w.status !== "received") && (
+        <div className="mt-12">
+          <Section n="✱" title="Wish list" anchor="supervisors/wishlist">
+            <WishList items={profile.wishlist} />
+          </Section>
+        </div>
+      )}
     </div>
   );
 }
@@ -115,7 +124,7 @@ function ContactPanel({
   homeAddress?: string[];
 }) {
   const phones = [
-    { label: "Mobile", n: s.phone },
+    { label: "Phone", n: s.phone },
     ...(office ? [{ label: "Office", n: office }] : []),
     ...(home ? [{ label: "Home", n: home }] : []),
   ];

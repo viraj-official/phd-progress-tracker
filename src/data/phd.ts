@@ -73,7 +73,7 @@ export const supervisors: Supervisor[] = [
 export const latestUpdate = {
   date: "2026-11-09",
   phase: "Preparing first progress review",
-  text: "Proposal completed. KDU ethics application finalised and signed by all investigators on 09 Nov 2026; to be submitted on 10 Nov 2026 after the REC fee is paid. The USJ ethics application follows after KDU approval. Literature: 298 papers collected, methodology extracted for 259. Next: research methodology and introduction for the first progress review (due 10 May 2027).",
+  text: "Proposal completed. KDU ethics application finalised and signed by all investigators on 09 Nov 2026; to be submitted on 10 Nov 2026 after the REC fee is paid. The USJ ethics application follows after KDU approval. Literature: 314 papers collected, methodology extracted for 275. Next: research methodology and introduction for the first progress review (due 10 May 2027).",
 };
 
 export type Objective = { id: string; short: string; text: string; rq: string };
@@ -138,12 +138,12 @@ export type Update = {
 export const updates: Update[] = [
   {
     date: "2026-11-09",
-    title: "Literature collection: methodology extracted for 259 of 298 papers",
+    title: "Literature collection: methodology extracted for 275 of 314 papers",
     tag: "Progress",
     items: [
-      "Searched for papers from 2021 onwards for all four objectives, excluding predatory journals: 298 papers in total.",
-      "Detailed research methodology (datasets, sample sizes, preprocessing, model settings, training values, evaluation and results) extracted from the full text for 259 papers: O1 85/85, O2 66/75, O3 70/79, O4 38/59.",
-      "249 PDFs are in the Papers folders; 49 papers still need a PDF (lists in each objective folder). Open-access PDFs can be opened from the Research Paper Bank.",
+      "Searched for papers from 2021 onwards for all four objectives, excluding predatory journals: 314 papers in total (16 added on 09 Nov 2026 to cover multimodal AI, conformal prediction, out-of-distribution detection, SAM adaptation, reporting guidelines and human-AI teaming).",
+      "Detailed research methodology (datasets, sample sizes, preprocessing, model settings, training values, evaluation and results) extracted from the full text for 275 papers: O1 88/88, O2 69/78, O3 74/83, O4 44/65.",
+      "263 PDFs are in the Papers folders; 51 papers still need a PDF (lists in each objective folder). Open-access PDFs can be opened from the Research Paper Bank.",
       "14 base papers identified and copied to the base papers folder.",
     ],
   },

@@ -49,18 +49,18 @@ const WISH_STATUS: Record<Wish["status"], { text: string; cls: string }> = {
   received: { text: "Received", cls: "bg-mint" },
 };
 
-function WishList({ items }: { items: Wish[] }) {
-  const open = items.filter((w) => w.status !== "received").length;
+export function WishList({ items }: { items: Wish[] }) {
+  const open = items.filter((w) => w.status !== "received");
   return (
     <div>
       <p className="text-[15px] text-neutral-700">
-        Things I need from others to move the PhD forward. {open} still open.
+        Things I need from my supervisors to move the PhD forward. Items are removed once received. {open.length} open.
       </p>
       <ul className="mt-5 space-y-4">
-        {items.map((w) => {
+        {open.map((w) => {
           const st = WISH_STATUS[w.status];
           return (
-            <li key={w.id} data-anchor={`profile/wishlist/${w.id}`} className="rounded-xl border border-black bg-white p-5">
+            <li key={w.id} data-anchor={`supervisors/wishlist/${w.id}`} className="rounded-xl border border-black bg-white p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className={`font-bold leading-snug ${w.status === "received" ? "text-neutral-500 line-through" : ""}`}>{w.item}</p>
@@ -70,7 +70,7 @@ function WishList({ items }: { items: Wish[] }) {
                   <span className={`rounded-xl border border-black px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider ${st.cls}`}>
                     {st.text}
                   </span>
-                  <ShareLink to={`profile/wishlist/${w.id}`} label="" className="px-2" />
+                  <ShareLink to={`supervisors/wishlist/${w.id}`} label="" className="px-2" />
                 </div>
               </div>
               {w.why && <p className="mt-3 text-sm leading-relaxed text-neutral-600">{w.why}</p>}
@@ -125,15 +125,11 @@ export function Profile() {
         </div>
       </section>
 
-      <Section n="01" title="Wish list" anchor="profile/wishlist">
-        <WishList items={p.wishlist} />
-      </Section>
-
-      <Section n="02" title="Education" anchor="profile/education">
+      <Section n="01" title="Education" anchor="profile/education">
         <Timeline items={p.education} />
       </Section>
 
-      <Section n="03" title="Experience" anchor="profile/experience">
+      <Section n="02" title="Experience" anchor="profile/experience">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <Label>Academic</Label>
@@ -150,7 +146,7 @@ export function Profile() {
         </div>
       </Section>
 
-      <Section n="04" title="Research & publications" anchor="profile/publications">
+      <Section n="03" title="Research & publications" anchor="profile/publications">
         <div className="space-y-8">
           {p.publications.map((g) => (
             <div key={g.group}>
@@ -168,7 +164,7 @@ export function Profile() {
         </div>
       </Section>
 
-      <Section n="05" title="Skills" anchor="profile/skills">
+      <Section n="04" title="Skills" anchor="profile/skills">
         <div className="grid gap-4 sm:grid-cols-2">
           {p.skills.map((g) => (
             <div key={g.group} className="rounded-xl border border-black bg-white p-5">
@@ -185,7 +181,7 @@ export function Profile() {
         </div>
       </Section>
 
-      <Section n="06" title="Achievements" anchor="profile/achievements">
+      <Section n="05" title="Achievements" anchor="profile/achievements">
         <ul className="grid gap-4 sm:grid-cols-2">
           {p.achievements.map((a) => (
             <li key={a.title} className="rounded-xl border border-black bg-white p-5">
@@ -199,7 +195,7 @@ export function Profile() {
         </ul>
       </Section>
 
-      <Section n="07" title="Certificates" anchor="profile/certificates">
+      <Section n="06" title="Certificates" anchor="profile/certificates">
         <div className="space-y-8">
           {p.certificates.map((g) => (
             <div key={g.group}>
@@ -220,7 +216,7 @@ export function Profile() {
         </div>
       </Section>
 
-      <Section n="08" title="Memberships & service" anchor="profile/memberships">
+      <Section n="07" title="Memberships & service" anchor="profile/memberships">
         <Label>Professional memberships</Label>
         <ul className="mt-3 space-y-2">
           {p.memberships.map((m) => (

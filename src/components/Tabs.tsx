@@ -43,8 +43,8 @@ const GROUPS: Group[] = [
     id: "people",
     label: "People",
     views: [
-      { id: "supervisors", label: "Supervisors" },
       { id: "profile", label: "My profile" },
+      { id: "supervisors", label: "Supervisors" },
     ],
   },
 ];

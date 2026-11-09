@@ -106,7 +106,7 @@ export const documents: PhdDocument[] = [
     date: "2027-05-10",
     parts: [
       { name: "Introduction", status: "progress", note: "Draft being written" },
-      { name: "Literature review", status: "progress", note: "298 papers collected; methodology extracted for 259" },
+      { name: "Literature review", status: "progress", note: "314 papers collected; methodology extracted for 275" },
       { name: "Research methodology", status: "progress", note: "Draft being written" },
       { name: "Preliminary work & results", status: "pending" },
       { name: "Work plan & timeline", status: "pending" },
