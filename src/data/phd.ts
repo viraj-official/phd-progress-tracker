@@ -73,7 +73,7 @@ export const supervisors: Supervisor[] = [
 export const latestUpdate = {
   date: "2026-11-09",
   phase: "Preparing first progress review",
-  text: "Proposal completed. KDU ethics application finalised on 09 Nov 2026 and signed by the candidate and supervisors; waiting for the KDU co-investigator's signature and the REC fee before submission. The USJ ethics application follows after KDU approval. Literature: 314 papers collected, methodology extracted for 275. Next: research methodology and introduction for the first progress review (due 10 May 2027).",
+  text: "Proposal completed. KDU ethics application finalised and signed by all investigators on 09 Nov 2026; to be submitted after the REC fee is paid. The USJ ethics application follows after KDU approval. Literature: 314 papers collected, methodology extracted for 275. Next: research methodology and introduction for the first progress review (due 10 May 2027).",
 };
 
 export type Objective = { id: string; short: string; text: string; rq: string };
@@ -152,9 +152,9 @@ export const updates: Update[] = [
     title: "KDU ethics application finalised",
     tag: "Milestone",
     items: [
-      "The candidate and three supervisors signed and dated the application (Part I, section 9.4); PI signed Part III. A KDU co-investigator was added for the KDU application; her signature is pending.",
+      "The candidate and three supervisors signed and dated the application (Part I, section 9.4); PI signed Part III. A KDU co-investigator was added for the KDU application and signed on 09 Nov 2026.",
       "Supervisors' own CVs used in the application, signed and dated 09 Nov 2026.",
-      "Complete print copy (116 pages) and soft-copy zip prepared. Remaining: co-investigator signature, REC fee payment slip, then submission.",
+      "Complete print copy (116 pages) and soft-copy zip prepared. Remaining: REC fee payment slip, then submission.",
     ],
   },
   {
