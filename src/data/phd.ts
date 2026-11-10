@@ -30,6 +30,7 @@ export const supervisors: Supervisor[] = [
     photo: "/img/ilmini.png",
     role: "Principal Supervisor",
     name: "Dr. WMKS Ilmini",
+    position: "Senior Lecturer in Computer Science",
     address: [
       "Department of Computer Science",
       "Faculty of Applied Sciences",
@@ -44,6 +45,7 @@ export const supervisors: Supervisor[] = [
     photo: "/img/kumara.png",
     role: "Co-Supervisor",
     name: "Dr. WGCW Kumara",
+    position: "Senior Lecturer (Grade I) in Computer Engineering",
     address: [
       "Department of Computer Engineering",
       "Faculty of Engineering",
