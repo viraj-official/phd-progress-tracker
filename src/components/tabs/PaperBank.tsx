@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PdfButton, PdfPages } from "../PdfViewer";
 import data from "@/data/papers.json";
 import { objectives } from "@/data/phd";
@@ -97,6 +97,24 @@ export function PaperBank({ path, go, embedded }: Props) {
   const group = groups.find((g) => g.id === path[0]) ?? groups[0];
   const index = group.papers.findIndex((p) => p.id === path[1]);
 
+  // Once the header sticks under the nav, shrink it to a single row of objective chips.
+  const sentinel = useRef<HTMLDivElement>(null);
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const check = () => {
+      const el = sentinel.current;
+      const navH = document.querySelector("nav")?.getBoundingClientRect().height ?? 56;
+      setCompact(!!el && el.getBoundingClientRect().top < navH);
+    };
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+  }, [index]);
+
   if (index >= 0) return <PaperReader group={group} index={index} go={go} />;
 
   // list URL: #papers/O1 or #papers/O1/page/2
@@ -109,34 +127,47 @@ export function PaperBank({ path, go, embedded }: Props) {
 
   return (
     <div>
+      {/* marker: when it scrolls behind the nav, the header goes compact */}
+      <div ref={sentinel} aria-hidden className={embedded ? "" : "-mt-10 sm:-mt-14"} />
       {/* sticky title + objective selector */}
       <div
-        className={`sticky top-[var(--nav-h)] z-20 -mx-5 border-b border-black bg-white px-5 py-3 sm:-mx-8 sm:px-8 ${
-          embedded ? "" : "-mt-10 sm:-mt-14"
+        className={`sticky top-[var(--nav-h)] z-20 -mx-5 border-b border-black bg-white px-5 sm:-mx-8 sm:px-8 ${
+          compact ? "py-2" : "pt-6 pb-4 sm:pt-8"
         }`}
       >
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <h2 className="text-base font-bold tracking-tight sm:text-lg">
-            Research Paper Bank <span className="ml-1 font-mono text-xs font-normal text-neutral-500">{total} papers</span>
-          </h2>
-          <div className="flex min-w-0 flex-wrap gap-1.5 sm:ml-auto">
-            {groups.map((g, gi) => {
-              const on = g.id === group.id;
-              return (
-                <button
-                  key={g.id}
-                  onClick={() => go([g.id])}
-                  aria-pressed={on}
-                  title={shortName(g.id)}
-                  className={`whitespace-nowrap rounded-full border border-black px-3 py-1 font-mono text-xs transition-colors ${
-                    on ? `${pastels[gi % 6]} font-bold` : "bg-white hover:bg-neutral-100"
-                  }`}
-                >
-                  {g.id === "BASE" ? "★ Base" : g.id} <span className="opacity-60">{g.papers.length}</span>
-                </button>
-              );
-            })}
-          </div>
+        {!compact && (
+          <>
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <h2 className="text-xl font-bold tracking-tight sm:text-3xl">Research Paper Bank</h2>
+              <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">{total} papers</span>
+            </div>
+            <p className="mt-1 hidden text-neutral-600 sm:block">
+              Open-access papers for each objective, each with a downloadable PDF. Choose a paper to read its notes and the PDF.
+            </p>
+          </>
+        )}
+
+        <div className={`grid grid-cols-5 ${compact ? "gap-2" : "mt-4 gap-2 sm:gap-3"}`}>
+          {groups.map((g, gi) => {
+            const on = g.id === group.id;
+            return (
+              <button
+                key={g.id}
+                onClick={() => go([g.id])}
+                aria-pressed={on}
+                title={shortName(g.id)}
+                className={`min-w-0 rounded-xl border border-black text-left transition-colors ${
+                  compact ? "px-2 py-1 sm:px-3" : "px-2 py-2 sm:px-4 sm:py-3"
+                } ${on ? `card-2d ${pastels[gi % 6]}` : "bg-white hover:bg-neutral-100"}`}
+              >
+                <span className="flex flex-wrap items-baseline justify-between gap-x-2 font-mono text-sm font-bold">
+                  {g.id === "BASE" ? "★ Base" : g.id}
+                  <span className="text-xs font-normal opacity-60">{g.papers.length}</span>
+                </span>
+                {!compact && <span className="mt-1 hidden text-sm leading-snug opacity-80 md:block">{shortName(g.id)}</span>}
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="mt-6 mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">

@@ -101,17 +101,42 @@ export function Tabs() {
           {/* desktop menu */}
           <div className="hidden h-full items-stretch md:flex" role="tablist">
             {GROUPS.map((g) => (
-              <button
-                key={g.id}
-                role="tab"
-                aria-selected={group.id === g.id}
-                onClick={() => go([g.views[0].id])}
-                className={`-mb-px whitespace-nowrap border-b-[3px] px-4 font-mono text-[13px] uppercase tracking-wider transition-colors ${
-                  group.id === g.id ? "border-black bg-lavender font-bold" : "border-transparent text-neutral-500 hover:text-black"
-                }`}
-              >
-                {g.label}
-              </button>
+              <div key={g.id} className="group/menu relative flex">
+                <button
+                  role="tab"
+                  aria-selected={group.id === g.id}
+                  aria-haspopup={g.views.length > 1 || undefined}
+                  onClick={() => go([g.views[0].id])}
+                  className={`-mb-px whitespace-nowrap border-b-[3px] px-4 font-mono text-[13px] uppercase tracking-wider transition-colors ${
+                    group.id === g.id ? "border-black bg-lavender font-bold" : "border-transparent text-neutral-500 hover:text-black"
+                  }`}
+                >
+                  {g.label}
+                  {g.views.length > 1 && <span aria-hidden className="ml-1.5 text-[10px]">▾</span>}
+                </button>
+                {/* dropdown: the pages under this menu item (e.g. Progress → Timeline / Updates / Log Book) */}
+                {g.views.length > 1 && (
+                  <div className="absolute top-full left-0 z-40 hidden min-w-full pt-px group-focus-within/menu:block group-hover/menu:block">
+                    <ul className="card-2d overflow-hidden rounded-b-xl border border-black bg-white">
+                      {g.views.map((v) => (
+                        <li key={v.id}>
+                          <button
+                            onClick={(e) => {
+                              go([v.id]);
+                              e.currentTarget.blur();
+                            }}
+                            className={`block w-full whitespace-nowrap px-4 py-2.5 text-left font-mono text-xs uppercase tracking-wider transition-colors ${
+                              v.id === view ? "bg-lavender font-bold text-black" : "text-neutral-600 hover:bg-neutral-100 hover:text-black"
+                            }`}
+                          >
+                            {v.label}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -144,6 +169,26 @@ export function Tabs() {
                     {g.label}
                     {group.id === g.id && <span>●</span>}
                   </button>
+                  {g.views.length > 1 && (
+                    <ul className="-mt-1 mb-2 ml-3 border-l-2 border-black pl-3">
+                      {g.views.map((v) => (
+                        <li key={v.id}>
+                          <button
+                            onClick={() => {
+                              go([v.id]);
+                              setMenuOpen(false);
+                            }}
+                            className={`flex w-full items-center justify-between py-2.5 text-left font-mono text-xs uppercase tracking-wider ${
+                              v.id === view ? "font-bold text-black" : "text-neutral-600"
+                            }`}
+                          >
+                            {v.label}
+                            {v.id === view && <span>●</span>}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
