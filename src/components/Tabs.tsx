@@ -21,8 +21,14 @@ type Group = { id: string; label: string; views: View[] };
 
 const GROUPS: Group[] = [
   { id: "overview", label: "Overview", views: [{ id: "overview", label: "Overview" }] },
-  { id: "research", label: "Objectives", views: [{ id: "objectives", label: "Objectives" }] },
-  { id: "paperbank", label: "Paper Bank", views: [{ id: "papers", label: "Paper Bank" }] },
+  {
+    id: "research",
+    label: "Research",
+    views: [
+      { id: "objectives", label: "Objectives" },
+      { id: "papers", label: "Paper Bank" },
+    ],
+  },
   {
     id: "progress",
     label: "Progress",
@@ -205,7 +211,7 @@ export function Tabs() {
 
             {view === "overview" && <Overview />}
             {view === "objectives" && <Objectives />}
-            {view === "papers" && <PaperBank path={path.slice(1)} go={(p) => go(["papers", ...p])} />}
+            {view === "papers" && <PaperBank embedded path={path.slice(1)} go={(p) => go(["papers", ...p])} />}
             {view === "timeline" && <Timeline />}
             {view === "updates" && <Updates />}
             {view === "logbook" && <LogBook />}
