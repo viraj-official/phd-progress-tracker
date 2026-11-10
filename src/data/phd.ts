@@ -73,9 +73,9 @@ export const supervisors: Supervisor[] = [
 
 // The headline shown in the top bar.
 export const latestUpdate = {
-  date: "2026-11-09",
+  date: "2026-11-10",
   phase: "Preparing first progress review",
-  text: "Proposal completed. KDU ethics application finalised and signed by all investigators on 09 Nov 2026; to be submitted after the REC fee is paid. The USJ ethics application follows after KDU approval. Literature: 314 papers collected, methodology extracted for 275. Next: research methodology and introduction for the first progress review (due 10 May 2027).",
+  text: "First progress review: Introduction, Literature Review, Research Methodology and Work Plan drafted (10 Nov 2026) and ready for supervisor review. KDU ethics application signed and REC fee paid; USJ application follows KDU approval. Paper Bank: 559 open-access papers. Next: preliminary results on public data (due 10 May 2027).",
 };
 
 export type Objective = { id: string; short: string; text: string; rq: string };
@@ -115,18 +115,21 @@ export type Task = {
   progress: number; // 0–100
 };
 
-// Approximate months — adjust to match the Gantt chart in the proposal.
+// Months from the Work Plan and Timeline (First Progress Review, Chapter 5); month 1 = Oct 2026.
 export const timeline: Task[] = [
-  { id: "1.1", name: "Literature review & proposal", start: 1, end: 6, progress: 60 },
-  { id: "1.2", name: "Ethics application & approval", start: 1, end: 6, progress: 40 },
-  { id: "2.0", name: "WP1 · Registry platform & data pipeline", start: 4, end: 12, progress: 0 },
-  { id: "3.0", name: "Data collection, annotation & QC", start: 6, end: 30, progress: 0 },
-  { id: "3.1", name: "WP2 · MRI perception baselines & calibration", start: 7, end: 18, progress: 0 },
-  { id: "4.0", name: "WP3 · Escalation & orchestration", start: 13, end: 24, progress: 0 },
-  { id: "5.0", name: "WP4 · Pathology + multimodal diagnosis", start: 19, end: 30, progress: 0 },
-  { id: "6.0", name: "Federated learning across hospitals", start: 25, end: 33, progress: 0 },
-  { id: "7.0", name: "Surgical planning proof of concept", start: 28, end: 33, progress: 0 },
-  { id: "8.0", name: "Thesis writing & publication", start: 30, end: 36, progress: 0 },
+  { id: "1.1", name: "Literature review, Paper Bank & proposal", start: 1, end: 8, progress: 75 },
+  { id: "1.2", name: "Ethics approvals (KDU, USJ, hospitals)", start: 2, end: 12, progress: 40 },
+  { id: "1.3", name: "First progress review (report & presentation)", start: 2, end: 8, progress: 55 },
+  { id: "2.1", name: "WP1 · Registry, database & data architecture", start: 5, end: 20, progress: 0 },
+  { id: "2.2", name: "WP1 · Data ingestion & de-identification", start: 9, end: 24, progress: 0 },
+  { id: "2.3", name: "WP1 · Data-quality control & research pipeline", start: 17, end: 24, progress: 0 },
+  { id: "3.1", name: "WP2 · MRI perception, calibration & local adaptation", start: 5, end: 24, progress: 0 },
+  { id: "4.0", name: "WP3 · Escalation policy & orchestration (core)", start: 5, end: 24, progress: 0 },
+  { id: "5.0", name: "WP4 · Pathology + combined diagnosis & staging", start: 5, end: 24, progress: 0 },
+  { id: "6.1", name: "WP5 · Federated learning across hospitals", start: 21, end: 36, progress: 0 },
+  { id: "7.0", name: "WP6 · Surgical planning proof of concept", start: 29, end: 36, progress: 0 },
+  { id: "7.1", name: "WP7 · Clinical validation (multi-reader study)", start: 25, end: 34, progress: 0 },
+  { id: "8.0", name: "Thesis writing & publication", start: 29, end: 36, progress: 0 },
 ];
 
 export type Update = {
@@ -138,6 +141,18 @@ export type Update = {
 
 // Shown newest first (sorted by date automatically).
 export const updates: Update[] = [
+  {
+    date: "2026-11-10",
+    title: "First progress review: four chapters drafted for supervisor review",
+    tag: "Milestone",
+    items: [
+      "Introduction written (draft v1, 14 pages): background, Sri Lankan context, research gaps, aim, objectives, research questions, scope and significance, updated with the Paper Bank evidence.",
+      "Literature review written (draft v1, 22 pages): review method, then one section per objective (O1-O4) built from the 559-paper Paper Bank, with summary tables and the open problems.",
+      "Research methodology written (draft v1, 18 pages): design-science research with mixed methods, the agents and the cost-based escalation rule, methods for WP1-WP7, sample, hypotheses, measures, analysis and ethics.",
+      "Work plan and timeline written (draft v1, 6 pages): progress to date, 36-month Gantt chart, monthly plan to May 2027, milestones, publications and risk register. The website timeline now follows this plan.",
+      "All four chapters can be opened from Documents → First Progress Review for review. Still to do: preliminary work and results, full report and presentation.",
+    ],
+  },
   {
     date: "2026-11-10",
     title: "Paper Bank expanded to 559 open-access papers",
