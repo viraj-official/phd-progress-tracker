@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { container } from "./ui";
+import { asset, container } from "./ui";
 import { focusAnchor } from "./deeplink";
 import { SettingsMenu } from "./SettingsMenu";
 import { Overview } from "./tabs/Overview";
@@ -92,9 +92,19 @@ export function Tabs() {
   return (
     <>
       <nav className="sticky top-0 z-30 h-[var(--nav-h)] border-b border-black bg-white">
-        <div className={`${container} flex h-full items-center justify-between gap-6`}>
-          <button onClick={() => go(["overview"])} className="shrink-0 font-mono text-sm font-bold tracking-wider">
-            PhD<span className="font-normal text-neutral-500"> · USJ</span>
+        <div className={`${container} flex h-full items-center justify-between gap-3 md:gap-6`}>
+          <button onClick={() => go(["overview"])} className="flex min-w-0 shrink items-center gap-2 text-left" aria-label="Home">
+            <span className="flex shrink-0 items-center gap-0.5 sm:gap-1">
+              <img src={asset("/img/logo-usj.png")} alt="University of Sri Jayewardenepura" className="h-7 w-7 object-contain sm:h-9 sm:w-9" />
+              <img src={asset("/img/logo-kelaniya.png")} alt="University of Kelaniya" className="h-7 w-7 object-contain sm:h-9 sm:w-9" />
+            </span>
+            <span className="min-w-0 leading-tight">
+              <span className="block truncate font-mono text-[11px] font-bold tracking-normal sm:text-sm sm:tracking-wider">Brain Cancer Research</span>
+              <span className="block truncate font-mono text-[11px] text-neutral-500">
+                PhD · <span className="lg:hidden">USJ</span>
+                <span className="hidden lg:inline">University of Sri Jayewardenepura</span>
+              </span>
+            </span>
           </button>
 
           {/* desktop menu */}
@@ -119,7 +129,7 @@ export function Tabs() {
             onClick={() => setMenuOpen((o) => !o)}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
-            className="flex items-center gap-3 rounded-xl border border-black bg-white px-3 py-1.5 font-mono text-xs uppercase tracking-wider md:hidden"
+            className="flex shrink-0 items-center gap-3 rounded-xl border border-black bg-white px-3 py-1.5 font-mono text-xs uppercase tracking-wider md:hidden"
           >
             {group.label}
             <span aria-hidden className="text-base leading-none">

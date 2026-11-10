@@ -7,7 +7,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PhD Progress · Viraj Sameera",
+  title: "Brain Cancer Research PhD · University of Sri Jayewardenepura · Viraj Sameera",
   description: "Progress tracker for supervisors",
 };
 
