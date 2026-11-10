@@ -1,13 +1,16 @@
 import { objectives } from "@/data/phd";
 import { PageHeader, pastels } from "../ui";
 import { ShareLink } from "../deeplink";
+import { objectiveGroups } from "./PaperBank";
+
+const paperCount = (id: string) => objectiveGroups.find((g) => g.id === id)?.papers.length ?? 0;
 
 export function Objectives() {
   return (
     <div>
       <PageHeader
         title="Research objectives"
-        description="Four objectives, each answering one research question."
+        description="Four objectives, each answering one research question. The papers for each objective are in the Paper Bank tab."
       />
 
       <div className="grid gap-6 md:grid-cols-2 md:gap-8">
@@ -24,7 +27,15 @@ export function Objectives() {
               </p>
               <p className="mt-2 leading-relaxed text-neutral-700 italic">{o.rq}</p>
             </div>
-            <ShareLink to={`objectives/${o.id.toLowerCase()}`} className="mt-6 self-start" />
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <a
+                href={`#papers/${o.id}`}
+                className="rounded-xl border border-black bg-white px-4 py-2 font-mono text-xs uppercase tracking-wider hover:bg-neutral-100"
+              >
+                {o.id} papers ({paperCount(o.id)}) in Paper Bank →
+              </a>
+              <ShareLink to={`objectives/${o.id.toLowerCase()}`} />
+            </div>
           </article>
         ))}
       </div>

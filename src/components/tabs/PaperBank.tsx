@@ -2,9 +2,9 @@ import { useState } from "react";
 import { PdfButton, PdfPages } from "../PdfViewer";
 import data from "@/data/papers.json";
 import { objectives } from "@/data/phd";
-import { pastels } from "../ui";
+import { asset, pastels } from "../ui";
 
-type Paper = {
+export type Paper = {
   id: string;
   title: string;
   authors: string;
@@ -36,9 +36,9 @@ type Paper = {
   statistics?: string;
   availability?: string;
 };
-type Group = { id: string; folder: string; heading: string; papers: Paper[] };
+export type Group = { id: string; folder: string; heading: string; papers: Paper[] };
 
-const objectiveGroups = data as Group[];
+export const objectiveGroups = data as Group[];
 const total = objectiveGroups.reduce((n, g) => n + g.papers.length, 0);
 // Extra tab listing the base papers (the main papers this PhD builds on) from every objective.
 const baseGroup: Group = {
@@ -75,7 +75,10 @@ const METHOD_FIELDS: [keyof Paper, string][] = [
 
 type Props = { path: string[]; go: (p: string[]) => void; embedded?: boolean };
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 12;
+
+const matches = (p: Paper, q: string) =>
+  !q || `${p.id} ${p.title} ${p.authors} ${p.venue} ${p.year}`.toLowerCase().includes(q.toLowerCase());
 
 // Page numbers to show: first, last and the pages next to the current one; 0 marks a gap.
 function pageList(page: number, pages: number): number[] {
@@ -90,13 +93,14 @@ function pageList(page: number, pages: number): number[] {
 
 export function PaperBank({ path, go, embedded }: Props) {
   const [onlyBase, setOnlyBase] = useState(false);
+  const [query, setQuery] = useState("");
   const group = groups.find((g) => g.id === path[0]) ?? groups[0];
   const index = group.papers.findIndex((p) => p.id === path[1]);
 
   if (index >= 0) return <PaperReader group={group} index={index} go={go} />;
 
   // list URL: #papers/O1 or #papers/O1/page/2
-  const list = onlyBase ? group.papers.filter((p) => p.base) : group.papers;
+  const list = (onlyBase ? group.papers.filter((p) => p.base) : group.papers).filter((p) => matches(p, query));
   const baseCount = group.papers.filter((p) => p.base).length;
   const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const page = Math.min(Math.max(path[1] === "page" ? Number(path[2]) || 1 : 1, 1), pages);
@@ -116,7 +120,7 @@ export function PaperBank({ path, go, embedded }: Props) {
           <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">{total} papers</span>
         </div>
         <p className="mt-1 hidden text-neutral-600 sm:block">
-          Core papers for each objective, with review notes. Choose a paper to read its notes and the PDF.
+          Open-access papers for each objective, each with a downloadable PDF. Choose a paper to read its notes and the PDF.
         </p>
 
         <div className="mt-4 grid grid-cols-5 gap-2 sm:gap-3">
@@ -145,6 +149,17 @@ export function PaperBank({ path, go, embedded }: Props) {
       <div className="mt-8 mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
         <p className="leading-relaxed text-neutral-600">{group.heading}</p>
         <div className="flex flex-wrap items-center gap-4">
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              if (page > 1) go([group.id]);
+            }}
+            placeholder={`Search ${group.id === "BASE" ? "base papers" : group.id}…`}
+            aria-label="Search papers"
+            className="w-full rounded-xl border border-black bg-white px-3 py-2 font-mono text-sm sm:w-64"
+          />
           {group.id !== "BASE" && (
             <label className="flex cursor-pointer items-center gap-2 font-mono text-xs uppercase tracking-wider">
               <button
@@ -173,17 +188,20 @@ export function PaperBank({ path, go, embedded }: Props) {
       </div>
       {!list.length && (
         <p className="rounded-xl border border-dashed border-neutral-400 p-10 text-center text-neutral-500">
-          No base papers in this objective yet.
+          {query ? "No papers match your search." : "No base papers in this objective yet."}
         </p>
       )}
       <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
         {shown.map((p) => (
-          <button
+          <div
             key={p.id}
-            onClick={() => go([group.id, p.id])}
-            className={`flex min-w-0 flex-col rounded-xl border border-black p-5 text-left break-words transition-colors hover:bg-lavender hover:text-black sm:p-6 ${
+            className={`flex min-w-0 flex-col overflow-hidden rounded-xl border border-black break-words ${
               p.base ? "card-2d bg-butter" : "bg-white"
             }`}
+          >
+          <button
+            onClick={() => go([group.id, p.id])}
+            className="flex flex-1 flex-col p-5 text-left transition-colors hover:bg-lavender hover:text-black sm:p-6"
           >
             <div className="flex items-center justify-between font-mono text-xs">
               <span className="font-bold">{p.id}</span>
@@ -200,6 +218,16 @@ export function PaperBank({ path, go, embedded }: Props) {
               <span className="whitespace-nowrap">Read →</span>
             </div>
           </button>
+          {p.pdfUrl && (
+            <a
+              href={asset(p.pdfUrl)}
+              download={p.pdf}
+              className="border-t border-black px-5 py-2.5 text-center font-mono text-xs hover:bg-lavender sm:px-6"
+            >
+              ↓ Download PDF
+            </a>
+          )}
+          </div>
         ))}
       </div>
 
@@ -308,6 +336,15 @@ function PaperReader({ group, index, go }: { group: Group; index: number; go: (p
               >
                 ▸ View PDF
               </PdfButton>
+            )}
+            {p.pdfUrl && (
+              <a
+                href={asset(p.pdfUrl)}
+                download={p.pdf}
+                className="flex-1 rounded-xl border border-black bg-white px-4 py-2.5 text-center hover:bg-lavender hover:text-black sm:flex-none"
+              >
+                ↓ Download
+              </a>
             )}
             {p.link && (
               <a

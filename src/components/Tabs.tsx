@@ -21,14 +21,8 @@ type Group = { id: string; label: string; views: View[] };
 
 const GROUPS: Group[] = [
   { id: "overview", label: "Overview", views: [{ id: "overview", label: "Overview" }] },
-  {
-    id: "research",
-    label: "Research",
-    views: [
-      { id: "objectives", label: "Objectives" },
-      { id: "papers", label: "Paper Bank" },
-    ],
-  },
+  { id: "research", label: "Objectives", views: [{ id: "objectives", label: "Objectives" }] },
+  { id: "paperbank", label: "Paper Bank", views: [{ id: "papers", label: "Paper Bank" }] },
   {
     id: "progress",
     label: "Progress",
@@ -70,10 +64,8 @@ export function Tabs() {
       setPath(p);
       setMenuOpen(false);
       window.scrollTo({ top: 0, behavior: "instant" });
-      // The Paper Bank list sits below the objectives on the Research page: jump to it.
-      if (p[0] === "papers" && !(p[2] && p[2] !== "page")) focusAnchor("papers", false);
       // "#view/part" links jump straight to that part and highlight it
-      else if (p.length > 1) focusAnchor(p.join("/"));
+      if (p.length > 1 && p[0] !== "papers") focusAnchor(p.join("/"));
     };
     sync();
     window.addEventListener("hashchange", sync);
@@ -167,14 +159,8 @@ export function Tabs() {
             {group.views.length > 1 && <SubTabs group={group} view={view} go={go} />}
 
             {view === "overview" && <Overview />}
-            {(view === "objectives" || view === "papers") && (
-              <>
-                <Objectives />
-                <div data-anchor="papers" className="mt-16 border-t-2 border-black pt-10 sm:mt-20">
-                  <PaperBank embedded path={view === "papers" ? path.slice(1) : []} go={(p) => go(["papers", ...p])} />
-                </div>
-              </>
-            )}
+            {view === "objectives" && <Objectives />}
+            {view === "papers" && <PaperBank path={path.slice(1)} go={(p) => go(["papers", ...p])} />}
             {view === "timeline" && <Timeline />}
             {view === "updates" && <Updates />}
             {view === "logbook" && <LogBook />}
