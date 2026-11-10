@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { PdfButton, PdfPages } from "../PdfViewer";
 import data from "@/data/papers.json";
 import { objectives } from "@/data/phd";
-import { pastels, asset } from "../ui";
+import { pastels } from "../ui";
 
 type Paper = {
   id: string;
@@ -300,14 +301,13 @@ function PaperReader({ group, index, go }: { group: Group; index: number; go: (p
 
           <div className="mt-6 flex flex-wrap gap-2 font-mono text-sm">
             {p.pdfUrl && (
-              <a
-                href={asset(p.pdfUrl)}
-                target="_blank"
-                rel="noreferrer"
+              <PdfButton
+                url={p.pdfUrl}
+                title={p.title}
                 className="flex-1 rounded-xl border border-black bg-lavender px-4 py-2.5 text-center text-black hover:bg-white hover:text-black sm:flex-none"
               >
-                Open PDF ↗
-              </a>
+                ▸ View PDF
+              </PdfButton>
             )}
             {p.link && (
               <a
@@ -359,7 +359,7 @@ function PaperReader({ group, index, go }: { group: Group; index: number; go: (p
       {/* PDF: desktop only — phones open the PDF in their own viewer */}
       <section className="hidden min-h-0 bg-neutral-100 lg:block">
         {p.pdfUrl ? (
-          <iframe key={p.pdfUrl} src={asset(p.pdfUrl)} title={p.title} className="h-full w-full" />
+          <div key={p.pdfUrl} className="h-full overflow-auto"><PdfPages url={p.pdfUrl} /></div>
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-4 p-10 text-center text-neutral-600">
             <p>This paper is not open access, so its PDF is not hosted here.</p>

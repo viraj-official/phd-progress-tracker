@@ -1,9 +1,10 @@
 import { supervisors, type Supervisor } from "@/data/phd";
 import { supervisorProfiles } from "@/data/supervisorProfiles";
-import { Avatar, Label, PageHeader, pastels, asset } from "../ui";
+import { Avatar, Label, PageHeader, pastels } from "../ui";
 import { Section, WishList } from "./Profile";
 import { profile } from "@/data/profile";
 import { ShareLink } from "../deeplink";
+import { PdfButton } from "../PdfViewer";
 
 type Props = { path: string[]; go: (p: string[]) => void };
 
@@ -46,13 +47,13 @@ export function Team({ path, go }: Props) {
                   View profile →
                 </button>
                 {prof?.cv ? (
-                  <a
-                    href={asset(prof.cv.url)}
-                    download={prof.cv.label}
+                  <PdfButton
+                    url={prof.cv.url}
+                    title={`CV · ${s.name}`}
                     className="rounded-xl border border-black bg-lavender px-3 py-2.5 text-center text-black hover:bg-white hover:text-black"
                   >
-                    ↓ Download CV
-                  </a>
+                    ▸ View CV
+                  </PdfButton>
                 ) : (
                   <span className="border border-dashed border-neutral-400 px-3 py-2.5 text-center text-neutral-500">
                     CV coming soon
@@ -198,14 +199,14 @@ function SupervisorPage({ s, back }: { s: Supervisor; back: () => void }) {
 
         <div data-anchor={`${base}/cv`} className="shrink-0 space-y-2 md:w-56">
           {p?.cv ? (
-            <a
-              href={asset(p.cv.url)}
-              download={p.cv.label}
-              className="flex items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-3 font-mono text-sm text-black hover:bg-white hover:text-black"
+            <PdfButton
+              url={p.cv.url}
+              title={`CV · ${s.name}`}
+              className="flex w-full items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-3 font-mono text-sm text-black hover:bg-white hover:text-black"
             >
-              <span>↓ Download CV</span>
-              <span className="text-xs opacity-70">{p.cv.size}</span>
-            </a>
+              <span>▸ View CV</span>
+              <span className="text-xs opacity-70">View</span>
+            </PdfButton>
           ) : (
             <p className="border border-dashed border-neutral-400 px-4 py-3 text-center font-mono text-xs text-neutral-500">
               CV coming soon

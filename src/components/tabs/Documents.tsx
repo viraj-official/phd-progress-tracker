@@ -1,6 +1,7 @@
 import { documents, type Status } from "@/data/documents";
-import { Label, PageHeader, asset } from "../ui";
+import { Label, PageHeader } from "../ui";
 import { ShareLink, slug } from "../deeplink";
+import { PdfButton } from "../PdfViewer";
 
 const STATUS: Record<Status, string> = {
   done: "Done",
@@ -120,9 +121,9 @@ export function Documents() {
                           {p.note && ` · ${p.note}`}
                         </span>
                         {p.file && (
-                          <a href={asset(p.file.url)} download={p.file.label} className="font-mono text-xs underline underline-offset-4 hover:no-underline">
-                            ↓ {p.file.label} ({p.file.size})
-                          </a>
+                          <PdfButton url={p.file.url} title={p.file.name ?? p.name} className="font-mono text-xs underline underline-offset-4 hover:no-underline">
+                            View {p.file.label} ({p.file.size})
+                          </PdfButton>
                         )}
                       </span>
                     </li>
@@ -140,7 +141,7 @@ export function Documents() {
                   if (!files.length)
                     return (
                       <p className="rounded-xl border border-dashed border-neutral-400 px-4 py-3 text-center font-mono text-xs text-neutral-500">
-                        Download available when finished
+                        Available when finished
                       </p>
                     );
                   return (
@@ -149,14 +150,14 @@ export function Documents() {
                       <ul className="mt-2 space-y-2">
                         {files.map((f) => (
                           <li key={f.url} data-anchor={`documents/${d.id}/${slug(f.label)}`} className="flex items-stretch gap-1.5">
-                            <a
-                              href={asset(f.url)}
-                              download={f.label}
-                              className="flex min-w-0 flex-1 items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-2.5 font-mono text-sm text-black hover:bg-white"
+                            <PdfButton
+                              url={f.url}
+                              title={f.name ?? f.label}
+                              className="flex min-w-0 flex-1 items-center justify-between gap-3 rounded-xl border border-black bg-lavender px-4 py-2.5 text-left font-mono text-sm text-black hover:bg-white"
                             >
-                              <span className="min-w-0">↓ {f.name ?? "Download PDF"}</span>
-                              <span className="shrink-0 text-xs opacity-70">{f.size}</span>
-                            </a>
+                              <span className="min-w-0">▸ {f.name ?? "View document"}</span>
+                              <span className="shrink-0 text-xs opacity-70">View</span>
+                            </PdfButton>
                             <ShareLink to={`documents/${d.id}/${slug(f.label)}`} label="" className="px-2" />
                           </li>
                         ))}

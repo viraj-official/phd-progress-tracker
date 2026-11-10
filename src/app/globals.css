@@ -110,3 +110,8 @@ body {
 html:not([data-share="on"]) .share-link {
   display: none !important;
 }
+
+/* Documents are view-only: hide the PDF viewer when printing */
+@media print {
+  .pdf-viewer { display: none !important; }
+}

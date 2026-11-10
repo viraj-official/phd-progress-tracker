@@ -1,6 +1,7 @@
 import { profile, type Item, type Wish } from "@/data/profile";
-import { Avatar, Label, asset } from "../ui";
+import { Avatar, Label } from "../ui";
 import { ShareLink } from "../deeplink";
+import { PdfButton } from "../PdfViewer";
 
 export function Section({
   n,
@@ -77,13 +78,13 @@ export function WishList({ items }: { items: Wish[] }) {
               {(w.link || w.file) && (
                 <div className="mt-4 flex flex-wrap gap-2 font-mono text-xs">
                   {w.file && (
-                    <a
-                      href={asset(w.file.url)}
-                      download={w.file.label}
+                    <PdfButton
+                      url={w.file.url}
+                      title={w.file.label}
                       className="rounded-xl border border-black bg-lavender px-3 py-2 text-black hover:bg-white"
                     >
-                      ↓ {w.file.label} ({w.file.size})
-                    </a>
+                      ▸ View {w.file.label}
+                    </PdfButton>
                   )}
                   {w.link && (
                     <a href={`#${w.link.to}`} className="rounded-xl border border-black bg-white px-3 py-2 hover:bg-lavender">
