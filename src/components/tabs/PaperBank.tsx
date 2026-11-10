@@ -111,42 +111,35 @@ export function PaperBank({ path, go, embedded }: Props) {
     <div>
       {/* sticky title + objective selector */}
       <div
-        className={`sticky top-[var(--nav-h)] z-20 -mx-5 border-b border-black bg-white px-5 pt-6 pb-4 sm:-mx-8 sm:px-8 sm:pt-8 ${
+        className={`sticky top-[var(--nav-h)] z-20 -mx-5 border-b border-black bg-white px-5 py-3 sm:-mx-8 sm:px-8 ${
           embedded ? "" : "-mt-10 sm:-mt-14"
         }`}
       >
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-          <h2 className="text-xl font-bold tracking-tight sm:text-3xl">Research Paper Bank</h2>
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">{total} papers</span>
-        </div>
-        <p className="mt-1 hidden text-neutral-600 sm:block">
-          Open-access papers for each objective, each with a downloadable PDF. Choose a paper to read its notes and the PDF.
-        </p>
-
-        <div className="mt-4 grid grid-cols-5 gap-2 sm:gap-3">
-          {groups.map((g, gi) => {
-            const on = g.id === group.id;
-            return (
-              <button
-                key={g.id}
-                onClick={() => go([g.id])}
-                aria-pressed={on}
-                className={`min-w-0 rounded-xl border border-black px-2 py-2 text-left transition-colors sm:px-4 sm:py-3 ${
-                  on ? `card-2d ${pastels[gi % 6]}` : "bg-white hover:bg-neutral-100"
-                }`}
-              >
-                <span className="flex flex-wrap items-baseline justify-between gap-x-2 font-mono text-sm font-bold">
-                  {g.id === "BASE" ? "★ Base" : g.id}
-                  <span className="text-xs font-normal opacity-60">{g.papers.length}</span>
-                </span>
-                <span className="mt-1 hidden text-sm leading-snug opacity-80 md:block">{shortName(g.id)}</span>
-              </button>
-            );
-          })}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <h2 className="text-base font-bold tracking-tight sm:text-lg">
+            Research Paper Bank <span className="ml-1 font-mono text-xs font-normal text-neutral-500">{total} papers</span>
+          </h2>
+          <div className="flex min-w-0 flex-wrap gap-1.5 sm:ml-auto">
+            {groups.map((g, gi) => {
+              const on = g.id === group.id;
+              return (
+                <button
+                  key={g.id}
+                  onClick={() => go([g.id])}
+                  aria-pressed={on}
+                  title={shortName(g.id)}
+                  className={`whitespace-nowrap rounded-full border border-black px-3 py-1 font-mono text-xs transition-colors ${
+                    on ? `${pastels[gi % 6]} font-bold` : "bg-white hover:bg-neutral-100"
+                  }`}
+                >
+                  {g.id === "BASE" ? "★ Base" : g.id} <span className="opacity-60">{g.papers.length}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
-
-      <div className="mt-8 mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+      <div className="mt-6 mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
         <p className="leading-relaxed text-neutral-600">{group.heading}</p>
         <div className="flex flex-wrap items-center gap-4">
           <input
