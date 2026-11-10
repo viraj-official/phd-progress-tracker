@@ -1,9 +1,10 @@
 """Sync the Research Paper Bank from ../3 Research Papers.
 
-Reads each O*/O*_Paper_Review.xlsx into src/data/papers.json and copies the
-PDFs of OPEN-ACCESS papers into public/papers/ so they are hosted with the site.
-Every PDF also stays in its objective's Papers folder (two copies). Only papers
-with a valid open-access PDF are listed: there is no "pending" list on the site.
+Reads each O*/O*_Paper_Review.xlsx into src/data/papers.json.
+PDFs are NOT hosted on the site (GitHub Pages size limit): they stay in each
+objective's Papers folder, and the site shows the extracted notes plus a link to
+where the paper is published. Only papers with a valid open-access PDF in the
+Papers folder are listed: there is no "pending" list on the site.
 
 Run from the web folder:  python scripts/sync_papers.py   (or: npm run sync)
 """
@@ -56,8 +57,6 @@ def clean(v):
 
 
 def main():
-    OUT_PDF.mkdir(parents=True, exist_ok=True)
-    hosted = set()
     groups = []
     skipped = 0
     for folder in sorted(p for p in SRC.iterdir() if p.is_dir()):
@@ -81,9 +80,6 @@ def main():
             if not ok:
                 skipped += 1
                 continue
-            shutil.copy2(pdf, OUT_PDF / pdf.name)
-            hosted.add(pdf.name)
-            rec["pdfUrl"] = f"/papers/{pdf.name}"
             papers.append(rec)
         groups.append({
             "id": folder.name.split("_")[0],
@@ -92,11 +88,10 @@ def main():
             "papers": papers,
         })
         print(f"{folder.name}: {len(papers)} papers")
-    # remove PDFs that are no longer open access / no longer listed
-    for f in OUT_PDF.glob("*.pdf"):
-        if f.name not in hosted:
-            f.unlink()
-    print(f"Hosting {len(hosted)} open-access PDFs in public/papers ({skipped} rows without one not listed)")
+    # PDFs are no longer hosted with the site: remove any old copies
+    if OUT_PDF.exists():
+        shutil.rmtree(OUT_PDF)
+    print(f"Listed {sum(len(g['papers']) for g in groups)} papers ({skipped} rows without an open-access PDF not listed)")
     OUT_JSON.write_text(json.dumps(groups, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Wrote {OUT_JSON}")
 

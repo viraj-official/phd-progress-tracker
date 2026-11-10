@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { PdfButton, PdfPages } from "../PdfViewer";
 import data from "@/data/papers.json";
 import { objectives } from "@/data/phd";
-import { asset, pastels } from "../ui";
+import { pastels } from "../ui";
 
 export type Paper = {
   id: string;
@@ -19,7 +18,6 @@ export type Paper = {
   limitations: string;
   link: string;
   pdf: string;
-  pdfUrl: string;
   openAccess?: string;
   base?: string;
   notes?: string;
@@ -76,6 +74,15 @@ const METHOD_FIELDS: [keyof Paper, string][] = [
 type Props = { path: string[]; go: (p: string[]) => void; embedded?: boolean };
 
 const PAGE_SIZE = 12;
+
+// Where the paper lives online, e.g. "arxiv.org" or "doi.org".
+const sourceName = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "source";
+  }
+};
 
 const matches = (p: Paper, q: string) =>
   !q || `${p.id} ${p.title} ${p.authors} ${p.venue} ${p.year}`.toLowerCase().includes(q.toLowerCase());
@@ -142,7 +149,7 @@ export function PaperBank({ path, go, embedded }: Props) {
               <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">{total} papers</span>
             </div>
             <p className="mt-1 hidden text-neutral-600 sm:block">
-              Open-access papers for each objective, each with a downloadable PDF. Choose a paper to read its notes and the PDF.
+              Open-access papers for each objective, with the notes extracted from each paper. Choose a paper to read its notes and open it at its source.
             </p>
           </>
         )}
@@ -242,13 +249,14 @@ export function PaperBank({ path, go, embedded }: Props) {
               <span className="whitespace-nowrap">Read →</span>
             </div>
           </button>
-          {p.pdfUrl && (
+          {p.link && (
             <a
-              href={asset(p.pdfUrl)}
-              download={p.pdf}
+              href={p.link}
+              target="_blank"
+              rel="noreferrer"
               className="border-t border-black px-5 py-2.5 text-center font-mono text-xs hover:bg-lavender sm:px-6"
             >
-              ↓ Download PDF
+              Paper at {sourceName(p.link)} ↗
             </a>
           )}
           </div>
@@ -293,7 +301,7 @@ export function PaperBank({ path, go, embedded }: Props) {
   );
 }
 
-/* ---------- reader: notes on the left, PDF on the right, both fixed to the screen ---------- */
+/* ---------- reader: the notes extracted from the paper, with a link to where the paper is ---------- */
 
 function PaperReader({ group, index, go }: { group: Group; index: number; go: (p: string[]) => void }) {
   const p = group.papers[index];
@@ -303,11 +311,10 @@ function PaperReader({ group, index, go }: { group: Group; index: number; go: (p
   const backToList = () => go(listPage === 1 ? [group.id] : [group.id, "page", String(listPage)]);
 
   return (
-    <div className="lg:grid lg:h-[calc(100dvh-var(--nav-h))] lg:grid-cols-[minmax(26rem,2fr)_3fr]">
-      {/* notes */}
-      <aside className="flex min-h-0 flex-col lg:border-r-2 lg:border-black">
+    <div className="mx-auto w-full max-w-4xl">
+      <article className="flex flex-col">
         {/* reader toolbar */}
-        <div className="sticky top-[var(--nav-h)] z-10 flex items-center justify-between gap-2 border-b border-black bg-white px-5 py-3 sm:px-8 lg:static">
+        <div className="sticky top-[var(--nav-h)] z-10 flex items-center justify-between gap-2 border-b border-black bg-white px-5 py-3 sm:px-8">
           <button
             onClick={backToList}
             className="font-mono text-xs uppercase tracking-wider hover:underline"
@@ -337,7 +344,7 @@ function PaperReader({ group, index, go }: { group: Group; index: number; go: (p
           </div>
         </div>
 
-        <div className="flex-1 px-5 py-8 sm:px-8 lg:overflow-y-auto">
+        <div className="px-5 py-8 sm:px-8">
           <p className="font-mono text-xs uppercase tracking-widest text-neutral-500">
             {p.id} · {p.year}
           </p>
@@ -351,36 +358,19 @@ function PaperReader({ group, index, go }: { group: Group; index: number; go: (p
           )}
           {p.notes && <p className="mt-2 text-sm text-neutral-600">Note: {p.notes}</p>}
 
-          <div className="mt-6 flex flex-wrap gap-2 font-mono text-sm">
-            {p.pdfUrl && (
-              <PdfButton
-                url={p.pdfUrl}
-                title={p.title}
-                className="flex-1 rounded-xl border border-black bg-lavender px-4 py-2.5 text-center text-black hover:bg-white hover:text-black sm:flex-none"
-              >
-                ▸ View PDF
-              </PdfButton>
-            )}
-            {p.pdfUrl && (
-              <a
-                href={asset(p.pdfUrl)}
-                download={p.pdf}
-                className="flex-1 rounded-xl border border-black bg-white px-4 py-2.5 text-center hover:bg-lavender hover:text-black sm:flex-none"
-              >
-                ↓ Download
-              </a>
-            )}
-            {p.link && (
+          {p.link && (
+            <div className="mt-6 flex flex-wrap items-center gap-3 font-mono text-sm">
               <a
                 href={p.link}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 rounded-xl border border-black bg-white px-4 py-2.5 text-center hover:bg-lavender hover:text-black sm:flex-none"
+                className="rounded-xl border border-black bg-lavender px-4 py-2.5 text-center text-black hover:bg-white"
               >
-                Source ↗
+                Open the paper at {sourceName(p.link)} ↗
               </a>
-            )}
-          </div>
+              <span className="break-all text-xs text-neutral-500">{p.link}</span>
+            </div>
+          )}
 
           {p.relation && (
             <section className="mt-8 rounded-xl border border-black bg-lavender p-5 text-black">
@@ -415,23 +405,7 @@ function PaperReader({ group, index, go }: { group: Group; index: number; go: (p
             ))}
           </dl>
         </div>
-      </aside>
-
-      {/* PDF: desktop only — phones open the PDF in their own viewer */}
-      <section className="hidden min-h-0 bg-neutral-100 lg:block">
-        {p.pdfUrl ? (
-          <div key={p.pdfUrl} className="h-full overflow-auto"><PdfPages url={p.pdfUrl} /></div>
-        ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-4 p-10 text-center text-neutral-600">
-            <p>This paper is not open access, so its PDF is not hosted here.</p>
-            {p.link && (
-              <a href={p.link} target="_blank" rel="noreferrer" className="rounded-xl border border-black bg-white px-4 py-2.5 font-mono text-sm hover:bg-lavender">
-                Read it at the publisher ↗
-              </a>
-            )}
-          </div>
-        )}
-      </section>
+      </article>
     </div>
   );
 }

@@ -78,7 +78,7 @@ export function Tabs() {
 
   const view = path[0];
   const group = groupOf(view)!;
-  // The paper reader uses the whole screen below the nav.
+  // The paper reader has its own layout (no page footer).
   const fullBleed = view === "papers" && !!path[2] && path[2] !== "page";
 
   return (

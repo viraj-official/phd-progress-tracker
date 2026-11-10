@@ -139,6 +139,16 @@ export type Update = {
 // Shown newest first (sorted by date automatically).
 export const updates: Update[] = [
   {
+    date: "2026-11-10",
+    title: "Paper Bank expanded to 559 open-access papers",
+    tag: "Progress",
+    items: [
+      "Added 313 open-access papers (arXiv and PubMed Central open-access subset), each downloaded as a PDF and checked: O1 143, O2 109, O3 146, O4 161 papers.",
+      "Removed 68 papers with no open-access PDF, duplicates, or papers that no longer match the objectives. Every paper listed has an open-access PDF in its objective's Papers folder.",
+      "The Paper Bank now has its own tab with a search box. PDFs are kept in the Papers folders, not on the website: each paper shows the notes extracted from it and a link to where it is published.",
+    ],
+  },
+  {
     date: "2026-11-09",
     title: "Literature collection: methodology extracted for 275 of 314 papers",
     tag: "Progress",
