@@ -6,6 +6,7 @@ import { focusAnchor } from "./deeplink";
 import { SettingsMenu } from "./SettingsMenu";
 import { Overview } from "./tabs/Overview";
 import { Objectives } from "./tabs/Objectives";
+import { Novelty } from "./tabs/Novelty";
 import { Timeline } from "./tabs/Timeline";
 import { Updates } from "./tabs/Updates";
 import { LogBook } from "./tabs/LogBook";
@@ -26,6 +27,7 @@ const GROUPS: Group[] = [
     label: "Research",
     views: [
       { id: "objectives", label: "Objectives" },
+      { id: "novelty", label: "Gaps & Novelty" },
       { id: "papers", label: "Paper Bank" },
     ],
   },
@@ -212,6 +214,7 @@ export function Tabs() {
 
             {view === "overview" && <Overview />}
             {view === "objectives" && <Objectives />}
+            {view === "novelty" && <Novelty />}
             {view === "papers" && <PaperBank embedded path={path.slice(1)} go={(p) => go(["papers", ...p])} />}
             {view === "timeline" && <Timeline />}
             {view === "updates" && <Updates />}
