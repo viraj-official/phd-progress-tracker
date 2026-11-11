@@ -121,12 +121,7 @@ export const documents: PhdDocument[] = [
         file: { url: "/docs/PR1_03_Research_Methodology.pdf", label: "PR1_03_Research_Methodology.pdf", size: "1.3 MB" },
       },
       { name: "Preliminary work & results", status: "pending" },
-      {
-        name: "Work plan & timeline",
-        status: "done",
-        note: "Draft v1 written 10 Nov 2026 · ready for supervisor review",
-        file: { url: "/docs/PR1_05_Work_Plan_and_Timeline.pdf", label: "PR1_05_Work_Plan_and_Timeline.pdf", size: "0.8 MB" },
-      },
+      { name: "Work plan & timeline", status: "pending" },
       { name: "Full report (all approved parts)", status: "pending" },
       { name: "Presentation to review panel", status: "pending" },
     ],

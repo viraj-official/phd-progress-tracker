@@ -75,7 +75,7 @@ export const supervisors: Supervisor[] = [
 export const latestUpdate = {
   date: "2026-11-10",
   phase: "Preparing first progress review",
-  text: "First progress review: Introduction, Literature Review, Research Methodology and Work Plan drafted (10 Nov 2026) and ready for supervisor review. KDU ethics application signed and REC fee paid; USJ application follows KDU approval. Paper Bank: 559 open-access papers. Next: preliminary results on public data (due 10 May 2027).",
+  text: "First progress review: Introduction, Literature Review and Research Methodology drafted (10 Nov 2026) and ready for supervisor review. KDU ethics application signed and REC fee paid; USJ application follows KDU approval. Paper Bank: 559 open-access papers. Next: preliminary results on public data (due 10 May 2027).",
 };
 
 export type Objective = { id: string; short: string; text: string; rq: string };
@@ -115,34 +115,18 @@ export type Task = {
   progress: number; // 0–100
 };
 
-// Months from the Work Plan and Timeline (First Progress Review, Chapter 5); month 1 = Oct 2026.
+// Approximate months — adjust to match the Gantt chart in the proposal.
 export const timeline: Task[] = [
-  { id: "1.1", name: "Literature review & Research Paper Bank", start: 1, end: 9, progress: 75 },
-  { id: "1.2", name: "Ethics: KDU REC review & approval", start: 2, end: 5, progress: 20 },
-  { id: "1.3", name: "Ethics: USJ ERC review & approval", start: 5, end: 8, progress: 0 },
-  { id: "1.4", name: "Hospital approval & data-access agreement (NHSL)", start: 6, end: 12, progress: 0 },
-  { id: "1.5", name: "First progress review (report & presentation)", start: 2, end: 8, progress: 55 },
-  { id: "2.1", name: "Registry requirements & data model (FHIR)", start: 5, end: 7, progress: 0 },
-  { id: "2.2", name: "Registry build: database, Orthanc, de-identification", start: 8, end: 14, progress: 0 },
-  { id: "2.3", name: "Pilot at first site; user feedback", start: 13, end: 15, progress: 0 },
-  { id: "2.4", name: "Retrospective data ingestion & quality control", start: 14, end: 28, progress: 0 },
-  { id: "2.5", name: "Annotation & clinician review of labels", start: 15, end: 28, progress: 0 },
-  { id: "3.1", name: "WP2a MRI baselines & uncertainty on public data", start: 3, end: 10, progress: 0 },
-  { id: "3.2", name: "WP2b Local adaptation & calibration (Sri Lankan MRI)", start: 16, end: 21, progress: 0 },
-  { id: "3.3", name: "WP4a Pathology models on public slides (TCGA)", start: 11, end: 16, progress: 0 },
-  { id: "3.4", name: "WP4b Local slides & MRI-pathology fusion", start: 22, end: 27, progress: 0 },
-  { id: "4.1", name: "WP3a Orchestrator & escalation prototype (public data)", start: 7, end: 13, progress: 0 },
-  { id: "4.2", name: "WP3b Full orchestration & escalation on local data", start: 19, end: 25, progress: 0 },
-  { id: "5.1", name: "WP5a Simulated federation (site-partitioned data)", start: 26, end: 27, progress: 0 },
-  { id: "5.2", name: "WP5b Multi-site federated deployment (narrowable)", start: 28, end: 30, progress: 0 },
-  { id: "6.1", name: "WP6 Surgical-planning proof of concept", start: 31, end: 32, progress: 0 },
-  { id: "6.2", name: "WP7 Protocol, cost elicitation & ethics amendment", start: 24, end: 27, progress: 0 },
-  { id: "6.3", name: "WP7 Multi-reader study & interviews", start: 30, end: 33, progress: 0 },
-  { id: "6.4", name: "WP7 Analysis & reporting", start: 33, end: 34, progress: 0 },
-  { id: "7.1", name: "Second progress review", start: 18, end: 20, progress: 0 },
-  { id: "7.2", name: "Third progress review", start: 30, end: 32, progress: 0 },
-  { id: "7.3", name: "Thesis writing (chapters drafted from papers)", start: 30, end: 35, progress: 0 },
-  { id: "7.4", name: "Contingency, corrections & submission", start: 35, end: 36, progress: 0 },
+  { id: "1.1", name: "Literature review & proposal", start: 1, end: 6, progress: 60 },
+  { id: "1.2", name: "Ethics application & approval", start: 1, end: 6, progress: 40 },
+  { id: "2.0", name: "WP1 · Registry platform & data pipeline", start: 4, end: 12, progress: 0 },
+  { id: "3.0", name: "Data collection, annotation & QC", start: 6, end: 30, progress: 0 },
+  { id: "3.1", name: "WP2 · MRI perception baselines & calibration", start: 7, end: 18, progress: 0 },
+  { id: "4.0", name: "WP3 · Escalation & orchestration", start: 13, end: 24, progress: 0 },
+  { id: "5.0", name: "WP4 · Pathology + multimodal diagnosis", start: 19, end: 30, progress: 0 },
+  { id: "6.0", name: "Federated learning across hospitals", start: 25, end: 33, progress: 0 },
+  { id: "7.0", name: "Surgical planning proof of concept", start: 28, end: 33, progress: 0 },
+  { id: "8.0", name: "Thesis writing & publication", start: 30, end: 36, progress: 0 },
 ];
 
 export type Update = {
@@ -156,14 +140,13 @@ export type Update = {
 export const updates: Update[] = [
   {
     date: "2026-11-10",
-    title: "First progress review: four chapters drafted for supervisor review",
+    title: "First progress review: three chapters drafted for supervisor review",
     tag: "Milestone",
     items: [
       "Introduction written (draft v1, 14 pages): background, Sri Lankan context, research gaps, aim, objectives, research questions, scope and significance, updated with the Paper Bank evidence.",
       "Literature review written (draft v1, 74 pages incl. 448 references): review method and paper flow, clinical and data context, a detailed review for each objective (O1-O4) built from the 559-paper Paper Bank, cross-cutting themes, synthesis and evidence tables for 120 key studies.",
       "Research methodology written (draft v1, 23 pages): design-science research with mixed methods, a methodology diagram, the agents and the cost-based escalation rule, and a step-by-step method, experiments and success criteria for each objective (O1-O4).",
-      "Work plan and timeline written (draft v1, 8 pages): a realistic plan with staggered work packages (never more than two research streams at once), duration assumptions, monthly Gantt chart, dependencies, monthly plan to May 2027, milestones, papers, risks and a minimum-thesis fall-back. The website timeline now follows this plan.",
-      "All four chapters can be opened from Documents → First Progress Review for review. Still to do: preliminary work and results, full report and presentation.",
+      "All three chapters can be opened from Documents → First Progress Review for review. Still to do: preliminary work and results, work plan and timeline, full report and presentation.",
     ],
   },
   {
