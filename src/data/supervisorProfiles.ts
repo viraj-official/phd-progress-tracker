@@ -1,6 +1,6 @@
 // Full supervisor profiles, keyed by the supervisor's slug in phd.ts.
-// A supervisor without an entry here shows "Profile and CV coming soon".
-// Put CV files in public/docs/ and set `cv` so they can be downloaded.
+// A supervisor without an entry here shows "Full profile and CV will be added soon".
+// Put CV files in public/docs/ and set `cv` so they can be viewed on the site.
 
 export type SupervisorProfile = {
   fullName: string;

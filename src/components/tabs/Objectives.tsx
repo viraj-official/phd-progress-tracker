@@ -10,7 +10,7 @@ export function Objectives() {
     <div>
       <PageHeader
         title="Research objectives"
-        description="Four objectives, each answering one research question. The papers for each objective are in the Paper Bank tab."
+        description="Four objectives, each answering one research question. The papers for each objective are in Research → Paper Bank."
       />
 
       <div className="grid gap-6 md:grid-cols-2 md:gap-8">

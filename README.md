@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PhD progress tracker
 
-## Getting Started
+Static site for supervisors to follow the PhD (Brain Cancer Research, University of Sri Jayewardenepura).
+Built with Next.js (static export) and published to GitHub Pages at
+`https://viraj-official.github.io/phd-progress-tracker/` on every push to `main`
+(see `.github/workflows/pages.yml`).
 
-First, run the development server:
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where to edit
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| What | File |
+| --- | --- |
+| Title, supervisors, latest update, objectives, timeline, updates | `src/data/phd.ts` |
+| Documents and their checklists | `src/data/documents.ts` (PDFs in `public/docs/`) |
+| Supervisor meeting log book | `src/data/logbook.ts` |
+| My profile and wish list | `src/data/profile.ts` |
+| Full supervisor profiles and CVs | `src/data/supervisorProfiles.ts` |
+| Research Paper Bank | generated: `npm run sync` reads `../3 Research Papers/O*/O*_Paper_Review.xlsx` into `src/data/papers.json` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Site map
 
-## Learn More
+- Overview
+- Research → Objectives, Paper Bank (`#papers/O1`, `#papers/O1/<paper id>`)
+- Progress → Timeline, Updates, Log Book
+- Documents (`#documents/<id>`)
+- People → My profile, Supervisors (`#supervisors/<slug>`)
 
-To learn more about Next.js, take a look at the following resources:
+Every section has a deep link (`#view/part`); the ⚙ menu switches on "copy link" buttons.
+Documents open in an in-page viewer and are not offered for download.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Checks before pushing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npx tsc --noEmit
+npm run lint
+npm run build
+```

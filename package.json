@@ -10,7 +10,6 @@
     "sync": "python -I scripts/sync_papers.py"
   },
   "dependencies": {
-    "@netlify/plugin-nextjs": "^5.16.6",
     "next": "15.5.29",
     "pdfjs-dist": "^4.10.38",
     "react": "^19.3.1",

@@ -71,11 +71,11 @@ export const supervisors: Supervisor[] = [
   },
 ];
 
-// The headline shown in the top bar.
+// The "Latest update" card on the Overview page.
 export const latestUpdate = {
-  date: "2026-11-10",
+  date: "2026-11-11",
   phase: "Preparing first progress review",
-  text: "First progress review: Introduction, Literature Review and Research Methodology drafted (10 Nov 2026) and ready for supervisor review. KDU ethics application submitted on 10 Nov 2026 (awaiting decision); USJ application follows KDU approval. Paper Bank: 559 open-access papers. Next: preliminary results on public data (due 10 May 2027).",
+  text: "First progress review: Introduction, Literature Review and Research Methodology revised to version 1.1 (11 Nov 2026) and ready for supervisor review. Detailed methodology extracted for all 559 Paper Bank papers. KDU ethics application submitted on 10 Nov 2026 (awaiting decision); USJ application follows KDU approval. Next: preliminary work and results (first progress review due 10 May 2027).",
 };
 
 export type Objective = { id: string; short: string; text: string; rq: string };
@@ -140,6 +140,17 @@ export type Update = {
 export const updates: Update[] = [
   {
     date: "2026-11-11",
+    title: "Paper review spreadsheets finalised",
+    tag: "Progress",
+    items: [
+      "All four review spreadsheets (559 papers) are now complete: every paper has its aim, method, end result, tools, gap and limitations filled in, plus a methodology status.",
+      "Journal names were made consistent (one spelling per journal, no volume or page details), so papers can be counted by journal.",
+      "The base papers sheet now lists all titles, years and journals; B11 (BraTS-Africa dataset) is marked as removed because it has no open-access PDF, leaving 13 base papers.",
+      "The Overview page now shows ethics status, First Progress Review status, paper statistics by objective and journal, meeting counts and a to-do list.",
+    ],
+  },
+  {
+    date: "2026-11-11",
     title: "Progress review chapters revised to version 1.1",
     tag: "Milestone",
     items: [
@@ -187,7 +198,7 @@ export const updates: Update[] = [
     items: [
       "Added 313 open-access papers (arXiv and PubMed Central open-access subset), each downloaded as a PDF and checked: O1 143, O2 109, O3 146, O4 161 papers.",
       "Removed 68 papers with no open-access PDF, duplicates, or papers that no longer match the objectives. Every paper listed has an open-access PDF in its objective's Papers folder.",
-      "The Paper Bank now has its own tab with a search box. PDFs are kept in the Papers folders, not on the website: each paper shows the notes extracted from it and a link to where it is published.",
+      "The Paper Bank (Research → Paper Bank) now has a search box. PDFs are kept in the Papers folders, not on the website: each paper shows the notes extracted from it and a link to where it is published.",
     ],
   },
   {

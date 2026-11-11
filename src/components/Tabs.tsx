@@ -93,6 +93,7 @@ export function Tabs() {
         <div className={`${container} flex h-full items-center justify-between gap-3 md:gap-6`}>
           <button onClick={() => go(["overview"])} className="flex min-w-0 shrink items-center gap-2 text-left" aria-label="Home">
             <span className="flex shrink-0 items-center gap-0.5 sm:gap-1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset("/img/logo-usj.png")} alt="University of Sri Jayewardenepura" className="h-7 w-7 object-contain sm:h-9 sm:w-9" />
             </span>
             <span className="min-w-0 leading-tight">

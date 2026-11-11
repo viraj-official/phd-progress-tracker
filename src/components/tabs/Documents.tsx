@@ -53,7 +53,7 @@ export function Documents() {
     <div>
       <PageHeader
         title="PhD Documents"
-        description="Formal documents for the PhD at the University of Sri Jayewardenepura, newest first, with the status of each part. Finished documents can be downloaded."
+        description="Formal documents for the PhD at the University of Sri Jayewardenepura, newest first, with the status of each part. Finished documents can be viewed here."
         aside={`${documents.length} documents`}
       />
 
