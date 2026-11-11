@@ -47,9 +47,9 @@ export const documents: PhdDocument[] = [
     id: "ethics-kdu",
     title: "Ethics Application — KDU",
     description:
-      "Ethics review by the Research Ethics Committee, Faculty of Medicine, General Sir John Kotelawala Defence University. Both supervisors advised submitting to KDU first; the USJ application follows after KDU approval. Files here are unsigned copies; the signed set is kept for submission.",
-    status: "progress",
-    statusText: "Ready to submit",
+      "Ethics review by the Research Ethics Committee, Faculty of Medicine, General Sir John Kotelawala Defence University. Both supervisors advised submitting to KDU first; the USJ application follows after KDU approval. Files here are unsigned copies; the signed set was submitted on 10 Nov 2026.",
+    status: "waiting",
+    statusText: "Submitted · awaiting decision",
     date: "2026-11-10",
     files: [
       { name: "Application (English)", url: "/docs/KDU_Ethics_Application_Viraj_Sameera.pdf", label: "KDU_Ethics_Application_Viraj_Sameera.pdf", size: "694 KB" },
@@ -73,8 +73,8 @@ export const documents: PhdDocument[] = [
       { name: "Data collection forms & interview guide (Appendix 3)", status: "done", note: "Clinician forms also in Sinhala and Tamil" },
       { name: "CVs of investigators", status: "done", note: "All 5 CVs signed and dated 09 Nov 2026" },
       { name: "Final check & print copy (116 pages)", status: "done", note: "09 Nov 2026" },
-      { name: "REC processing fee & payment slip", status: "pending", note: "Rs 1000 / 2000" },
-      { name: "Submitted to KDU ethics committee", status: "pending", note: "Planned 10 Nov 2026" },
+      { name: "REC processing fee & payment slip", status: "done", note: "Rs 1000 paid 10 Nov 2026 · receipt No. 13275" },
+      { name: "Submitted to KDU ethics committee", status: "done", note: "10 Nov 2026" },
       { name: "KDU ethics approval", status: "waiting", note: "Approval document will be added here" },
     ],
   },

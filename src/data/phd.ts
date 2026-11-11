@@ -75,7 +75,7 @@ export const supervisors: Supervisor[] = [
 export const latestUpdate = {
   date: "2026-11-10",
   phase: "Preparing first progress review",
-  text: "First progress review: Introduction, Literature Review and Research Methodology drafted (10 Nov 2026) and ready for supervisor review. KDU ethics application signed and REC fee paid; USJ application follows KDU approval. Paper Bank: 559 open-access papers. Next: preliminary results on public data (due 10 May 2027).",
+  text: "First progress review: Introduction, Literature Review and Research Methodology drafted (10 Nov 2026) and ready for supervisor review. KDU ethics application submitted on 10 Nov 2026 (awaiting decision); USJ application follows KDU approval. Paper Bank: 559 open-access papers. Next: preliminary results on public data (due 10 May 2027).",
 };
 
 export type Objective = { id: string; short: string; text: string; rq: string };
@@ -118,7 +118,7 @@ export type Task = {
 // Approximate months — adjust to match the Gantt chart in the proposal.
 export const timeline: Task[] = [
   { id: "1.1", name: "Literature review & proposal", start: 1, end: 6, progress: 60 },
-  { id: "1.2", name: "Ethics application & approval", start: 1, end: 6, progress: 40 },
+  { id: "1.2", name: "Ethics application & approval", start: 1, end: 6, progress: 50 },
   { id: "2.0", name: "WP1 · Registry platform & data pipeline", start: 4, end: 12, progress: 0 },
   { id: "3.0", name: "Data collection, annotation & QC", start: 6, end: 30, progress: 0 },
   { id: "3.1", name: "WP2 · MRI perception baselines & calibration", start: 7, end: 18, progress: 0 },
@@ -138,6 +138,16 @@ export type Update = {
 
 // Shown newest first (sorted by date automatically).
 export const updates: Update[] = [
+  {
+    date: "2026-11-10",
+    title: "KDU ethics application submitted",
+    tag: "Milestone",
+    items: [
+      "Submitted the ethics application to the Research Ethics Committee, Faculty of Medicine, KDU, on the night of 10 Nov 2026.",
+      "Sent with the soft copies (zip), a blinded copy of the proposal without investigator details, and the REC fee receipt (No. 13275, Rs 1000, paid 10 Nov 2026).",
+      "Next: wait for the committee's decision, then submit the USJ ethics application.",
+    ],
+  },
   {
     date: "2026-11-10",
     title: "First progress review: three chapters drafted for supervisor review",

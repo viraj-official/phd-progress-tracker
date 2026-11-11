@@ -72,6 +72,7 @@ function MeetingCard({ m, n, open }: { m: Meeting; n: number; open: boolean }) {
                       <span className="block font-mono text-xs text-neutral-500 no-underline">
                         {a.owner}
                         {a.due && ` · due ${fmt(a.due)}`}
+                        {a.note && ` · ${a.note}`}
                       </span>
                     </span>
                   </li>
@@ -132,6 +133,7 @@ export function LogBook() {
                 <span className="shrink-0 font-mono text-xs text-neutral-500">
                   {a.owner}
                   {a.due && ` · due ${fmt(a.due)}`} · from {fmt(a.from)}
+                  {a.note && <span className="block normal-case">{a.note}</span>}
                 </span>
               </li>
             ))}
