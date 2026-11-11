@@ -49,7 +49,7 @@ export const meetings: Meeting[] = [
     ],
     actions: [
       { task: "Collect more research papers", owner: "Viraj", done: true, note: "Paper Bank expanded to 559 open-access papers (10 Nov 2026)" },
-      { task: "Collect papers with a detailed research methodology", owner: "Viraj", done: false, note: "Detailed methodology extracted for 246 of 559 papers; the rest in progress" },
+      { task: "Collect papers with a detailed research methodology", owner: "Viraj", done: true, note: "Detailed methodology extracted for all 559 papers (11 Nov 2026)" },
       { task: "Start working on the research methodology", owner: "Viraj", done: true, note: "Research methodology draft v1 written (10 Nov 2026), in Documents for review" },
     ],
   },

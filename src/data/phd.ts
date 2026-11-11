@@ -139,6 +139,16 @@ export type Update = {
 // Shown newest first (sorted by date automatically).
 export const updates: Update[] = [
   {
+    date: "2026-11-11",
+    title: "Detailed methodology extracted for all 559 papers",
+    tag: "Progress",
+    items: [
+      "Read the remaining 313 papers and recorded how each one used its method: study design, datasets and sample size, preprocessing and split, model details, training settings, evaluation and metrics, baselines, key results, statistics and code/data availability.",
+      "Each paper now also has a plain-English methodology summary and notes on its gap and limitations. Coverage: O1 143, O2 109, O3 146, O4 161 papers (559/559).",
+      "The review spreadsheets were updated first and the Paper Bank tab was synced from them.",
+    ],
+  },
+  {
     date: "2026-11-10",
     title: "KDU ethics application submitted",
     tag: "Milestone",
