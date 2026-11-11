@@ -105,19 +105,19 @@ export const documents: PhdDocument[] = [
       {
         name: "Introduction",
         status: "done",
-        note: "Draft v1 written 10 Nov 2026 · ready for supervisor review",
+        note: "Version 1.1 (11 Nov 2026) · title page, contents, lists, abbreviations · ready for supervisor review",
         file: { url: "/docs/PR1_01_Introduction.pdf", label: "PR1_01_Introduction.pdf", size: "0.5 MB" },
       },
       {
         name: "Literature review",
         status: "done",
-        note: "Draft v1 (74 pages) from the 559-paper Paper Bank · ready for supervisor review",
+        note: "Version 1.1 (11 Nov 2026, 78 pages, 446 references) from the 559-paper Paper Bank · ready for supervisor review",
         file: { url: "/docs/PR1_02_Literature_Review.pdf", label: "PR1_02_Literature_Review.pdf", size: "1.4 MB" },
       },
       {
         name: "Research methodology",
         status: "done",
-        note: "Draft v1 written 10 Nov 2026 · ready for supervisor review",
+        note: "Version 1.1 (11 Nov 2026) · title page, contents, lists, abbreviations · ready for supervisor review",
         file: { url: "/docs/PR1_03_Research_Methodology.pdf", label: "PR1_03_Research_Methodology.pdf", size: "1.3 MB" },
       },
       { name: "Preliminary work & results", status: "pending" },

@@ -140,6 +140,17 @@ export type Update = {
 export const updates: Update[] = [
   {
     date: "2026-11-11",
+    title: "Progress review chapters revised to version 1.1",
+    tag: "Milestone",
+    items: [
+      "All three chapters now open with a university title page, a document information page with version history, a contents page with page numbers, lists of figures and tables, and a list of abbreviations; body pages carry a running header and page numbers.",
+      "References in all chapters standardised to APA 7th edition (author names, journal names in italics, preprints labelled); malformed author and journal entries corrected.",
+      "Literature review: review method updated to methodology extraction for all 559 papers; the four evidence tables rebuilt from the complete extraction records (design, data and sample, key quantitative results, limitation) in whole sentences.",
+      "Introduction: progress since registration now given as a table (proposal, literature, methodology extraction, ethics, chapters, supervision tracking).",
+    ],
+  },
+  {
+    date: "2026-11-11",
     title: "Detailed methodology extracted for all 559 papers",
     tag: "Progress",
     items: [
