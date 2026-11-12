@@ -73,9 +73,9 @@ export const supervisors: Supervisor[] = [
 
 // The "Latest update" card on the Overview page.
 export const latestUpdate = {
-  date: "2026-11-11",
+  date: "2026-11-12",
   phase: "Preparing first progress review",
-  text: "First progress review: Introduction, Literature Review and Research Methodology revised to version 1.1 (11 Nov 2026) and ready for supervisor review. Detailed methodology extracted for all 559 Paper Bank papers. KDU ethics application submitted on 10 Nov 2026 (awaiting decision); USJ application follows KDU approval. Next: preliminary work and results (first progress review due 10 May 2027).",
+  text: "First paper drafted: a narrative review of AI across the brain tumour care pathway (version 0.2, about 7,000 words, 221 references), now in the Papers tab for supervisor review. First progress review chapters (Introduction, Literature Review, Research Methodology) are at version 1.1 and ready for review. KDU ethics application submitted on 10 Nov 2026 (awaiting decision).",
 };
 
 export type Objective = { id: string; short: string; text: string; rq: string };

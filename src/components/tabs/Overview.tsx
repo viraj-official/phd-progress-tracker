@@ -3,6 +3,7 @@ import { documents, type Status } from "@/data/documents";
 import { meetings } from "@/data/logbook";
 import { todos } from "@/data/todo";
 import { paperStats } from "@/data/paperStats";
+import { publications } from "@/data/publications";
 import { Label, pastels } from "../ui";
 import { ShareLink } from "../deeplink";
 import { StatusMark } from "./Documents";
@@ -115,6 +116,45 @@ function ProgressReview() {
           </ul>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ---------- my papers ---------- */
+function MyPapers() {
+  const sorted = [...publications].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  return (
+    <div data-anchor="overview/my-papers" className="card-2d rounded-xl border border-black bg-white p-5 sm:p-6">
+      <CardHead title={`My papers (${publications.length})`} href="publications" anchor="overview/my-papers" />
+      <ul className="mt-4 space-y-4">
+        {sorted.map((d) => {
+          const done = d.parts.filter((p) => p.status === "done").length;
+          const next = d.parts.find((p) => p.status !== "done");
+          return (
+            <li key={d.id}>
+              <a href={`#publications/${d.id}`} className="group flex gap-3">
+                <span className="pt-1">
+                  <StatusMark status={d.status} size={20} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-bold leading-snug group-hover:underline">{d.title}</span>
+                  <span className="mt-1 flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-wider">
+                    <span className="rounded-xl border border-black bg-sky px-2 py-0.5">{d.statusText}</span>
+                    {d.date && <span className="text-neutral-500">{fmt(d.date)}</span>}
+                    <span className="text-neutral-500">
+                      {done}/{d.parts.length} steps done
+                    </span>
+                  </span>
+                  <span className="mt-2 block">
+                    <Bar pct={Math.round((done / d.parts.length) * 100)} />
+                  </span>
+                  {next && <span className="mt-1.5 block text-sm text-neutral-600">Next: {next.name}</span>}
+                </span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -247,6 +287,11 @@ function Todo() {
     ...meetings.flatMap((m) =>
       m.actions.filter((a) => !a.done).map((a) => ({ task: a.task, due: a.due, from: `Meeting ${fmt(m.date)}`, link: "logbook/actions", status: "open" as const })),
     ),
+    // the next step of each paper that is not finished
+    ...publications.flatMap((d) => {
+      const next = d.parts.find((p) => p.status !== "done");
+      return d.status === "done" || !next ? [] : [{ task: `${next.name}: ${d.title}`, from: "Papers", link: `publications/${d.id}`, status: next.status }];
+    }),
     ...documents
       .filter((d) => d.status !== "done")
       .flatMap((d) =>
@@ -338,6 +383,10 @@ export function Overview() {
       <div className="mt-6 grid gap-5 md:gap-6 lg:grid-cols-2">
         <Ethics />
         <ProgressReview />
+      </div>
+
+      <div className="mt-6">
+        <MyPapers />
       </div>
 
       <div className="mt-6">
