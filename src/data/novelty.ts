@@ -10,6 +10,7 @@ export type Point = {
   objectives: string[]; // e.g. ["O2"]
   answers?: string[]; // novelty only: ids of the gaps it answers
   tests?: string[]; // novelty only: hypotheses that test it, e.g. ["H1"]
+  category?: string; // contributions only: Theory, Algorithm, Model, System / software, Evaluation method
 };
 
 // Hypotheses, from Chapter 3 (Research Methodology).
@@ -206,52 +207,96 @@ export const technicalNovelty: Point[] = [
 // answers: gap ids it closes (shown as chips). output: where it is reported.
 export type Contribution = Point & { output: string };
 
-// Computer-science contributions: new algorithms, architectures, models and evaluation methods.
+// Computer-science contributions: theory, algorithms, models, software systems and evaluation methods.
+// Methods and tools named here are those planned in Chapter 3 (Research Methodology).
 export const technicalContributions: Contribution[] = [
   {
-    id: "tc-framework",
-    title: "Uncertainty-aware multi-agent framework",
-    text: "An architecture of six specialist agents and an orchestrator in which every agent reports a calibrated confidence, uncertainty is propagated across each hand-off, and every output and decision is written to an append-only audit trail.",
-    objectives: ["O1"],
-    answers: ["handoffs"],
-    tests: ["H2"],
-    output: "Framework code, agent contracts, error-propagation analysis (part of paper P2)",
+    id: "tc-formulation",
+    category: "Theory",
+    title: "Formal model of selective autonomy over a chain of decisions",
+    text: "A formulation of when an AI system may act and when it must refer, for a chain of dependent sub-decisions with asymmetric error costs and a fixed clinician capacity, optimised as a risk-versus-coverage trade-off. It turns a principle (keep the clinician in the loop) into a problem that can be solved and tested.",
+    objectives: ["O2"],
+    answers: ["deferral-chain"],
+    tests: ["H1"],
+    output: "Problem formulation and analysis (paper P2)",
   },
   {
     id: "tc-escalation",
+    category: "Algorithm",
     title: "Calibrated escalation policy (core contribution)",
-    text: "An algorithm that decides after every agent step whether to proceed, gather more evidence or refer to a clinician, using calibrated uncertainty, asymmetric error costs and limited clinician capacity, with a workload-versus-safety analysis.",
+    text: "An algorithm applied after every agent step: calibrate the score, convert it to an uncertainty, compare it with a cost-derived threshold and add novelty (out-of-distribution), conflict and mandatory-review triggers, giving one of three actions: proceed, gather more evidence or escalate.",
     objectives: ["O2"],
     answers: ["deferral-chain"],
     tests: ["H1"],
     output: "Escalation policy and workload-safety analysis, flagship paper P2",
   },
   {
-    id: "tc-models",
-    title: "Data-efficient, calibrated MRI and pathology models with missing-source fusion",
-    text: "Self-supervised and transfer-learned MRI segmentation and classification, slide-level pathology models and an MRI-pathology fusion that keeps working when a sequence or the slide is missing, all calibrated on small heterogeneous data.",
+    id: "tc-propagation",
+    category: "Algorithm",
+    title: "Uncertainty propagation across dependent models",
+    text: "A method for passing uncertainty from one model to the next, for example by sampling segmentations from an ensemble and running each through the classifier, so a doubtful upstream result produces a correspondingly doubtful downstream result.",
+    objectives: ["O1"],
+    answers: ["handoffs"],
+    tests: ["H2"],
+    output: "Propagation method and error-propagation analysis (part of paper P2)",
+  },
+  {
+    id: "tc-mri-model",
+    category: "Model",
+    title: "Calibrated, data-efficient MRI perception model",
+    text: "Tumour segmentation and classification models (nnU-Net and Swin UNETR baselines) with self-supervised pre-training on unlabelled local MRI, random sequence dropout so missing sequences are tolerated, ensemble-based uncertainty and post-hoc calibration, plus a failure taxonomy that maps where the model is not competent.",
     objectives: ["O3"],
-    answers: ["fusion", "label-efficient-confidence"],
-    tests: ["H3", "H4"],
-    output: "Models for the agents, papers P1 (MRI) and P3 (pathology & fusion)",
+    answers: ["label-efficient-confidence", "real-data"],
+    tests: ["H3"],
+    output: "Trained MRI models and paper P1",
+  },
+  {
+    id: "tc-pathology-fusion",
+    category: "Model",
+    title: "Slide-level pathology model and missing-source fusion model",
+    text: "Attention-based multiple-instance learning on pathology foundation-model features for tumour type and grade from whole slides, and a fusion model that combines MRI and slide evidence and degrades gracefully when one source is missing or poor.",
+    objectives: ["O3"],
+    answers: ["fusion"],
+    tests: ["H4"],
+    output: "Trained pathology and fusion models, paper P3",
   },
   {
     id: "tc-federated",
-    title: "Federated training protocol that monitors calibration",
-    text: "A privacy-preserving protocol for training across a few small hospitals, with measurement of how aggregation and adaptation change calibration and therefore the behaviour of the escalation policy.",
+    category: "Algorithm",
+    title: "Calibration-aware federated learning protocol",
+    text: "A protocol for training across a few small hospitals without moving data (FedAvg, FedProx and FedBN compared with single-site and pooled training) that measures how aggregation and adaptation change calibration, and therefore the behaviour of the escalation policy.",
     objectives: ["O3"],
-    answers: ["federation-calibration"],
+    answers: ["federation-calibration", "data-sharing"],
     tests: ["H5"],
     output: "Federated protocol and paper P4",
   },
   {
+    id: "tc-orchestration-software",
+    category: "System / software",
+    title: "Multi-agent orchestration software",
+    text: "A software framework with a typed contract for each agent (input, output, calibrated uncertainty, validation conditions), an orchestrator that routes cases, an append-only audit trail recording input, output, uncertainty, action, reason and model version, and a clinician interface for accept, amend or reject.",
+    objectives: ["O1"],
+    answers: ["handoffs", "oversight"],
+    output: "Framework code and agent contracts",
+  },
+  {
+    id: "tc-data-platform",
+    category: "System / software",
+    title: "Privacy-preserving clinical data platform",
+    text: "The registry's software layer: a PostgreSQL database with an HL7 FHIR resource model, an Orthanc DICOM server, a de-identification and defacing pipeline and automated image and slide quality checks, designed so data can feed both local models and federated training.",
+    objectives: ["O1", "O3"],
+    answers: ["no-registry", "data-sharing"],
+    output: "Registry platform software (WP1)",
+  },
+  {
     id: "tc-metrics",
-    title: "Metrics for the quality of escalation decisions",
-    text: "New evaluation measures, appropriate-escalation rate and missed-escalation rate, used with coverage and selective risk to judge whether a system referred the right cases.",
+    category: "Evaluation method",
+    title: "Escalation-quality metrics and evaluation toolkit",
+    text: "New measures, appropriate-escalation rate and missed-escalation rate, used with coverage, selective risk, risk-coverage curves and calibration metrics (ECE, Brier score, reliability diagrams) to judge whether a system referred the right cases.",
     objectives: ["O4"],
     answers: ["escalation-metrics"],
     tests: ["H1", "H6"],
-    output: "Evaluation protocol (part of paper P5)",
+    output: "Evaluation protocol and code (part of paper P5)",
   },
 ];
 
