@@ -1,7 +1,8 @@
 import {
   applicationGaps,
   applicationNovelty,
-  contributions,
+  clinicalContributions,
+  technicalContributions,
   hypotheses,
   technicalGaps,
   technicalNovelty,
@@ -17,7 +18,8 @@ const lists = [
   { prefix: "TG", anchor: "novelty/technical-gaps", items: technicalGaps as Point[], kind: "gap" },
   { prefix: "AN", anchor: "novelty/application-novelty", items: applicationNovelty as Point[], kind: "novelty" },
   { prefix: "TN", anchor: "novelty/technical-novelty", items: technicalNovelty as Point[], kind: "novelty" },
-  { prefix: "C", anchor: "novelty/contributions", items: contributions as Point[], kind: "contribution" },
+  { prefix: "TC", anchor: "novelty/technical-contributions", items: technicalContributions as Point[], kind: "contribution" },
+  { prefix: "MC", anchor: "novelty/clinical-contributions", items: clinicalContributions as Point[], kind: "contribution" },
 ] as const;
 
 type Ref = { code: string; href: string; title: string; prefix: string };
@@ -28,7 +30,7 @@ for (const l of lists)
   );
 const gapRef = (id: string) => refs.get(`AG:${id}`) ?? refs.get(`TG:${id}`);
 
-const chipColor: Record<string, string> = { AG: "bg-rose", TG: "bg-peach", AN: "bg-mint", TN: "bg-sky", C: "bg-lavender" };
+const chipColor: Record<string, string> = { AG: "bg-rose", TG: "bg-peach", AN: "bg-mint", TN: "bg-sky", TC: "bg-lavender", MC: "bg-butter" };
 
 function Chip({ r }: { r: Ref }) {
   return (
@@ -114,6 +116,12 @@ function Column({ kind, label, sub, color, items, anchor, prefix }: { kind: stri
               <Tags objectives={p.objectives} />
             </div>
             <p className="mt-2 text-[15px] leading-relaxed text-neutral-700">{p.text}</p>
+            {"output" in p && (
+              <p className="mt-3 font-mono text-xs text-neutral-600">
+                <span className="mr-2 uppercase tracking-widest text-neutral-500">Output</span>
+                {(p as Point & { output: string }).output}
+              </p>
+            )}
             <Links p={p} />
           </li>
         ))}
@@ -139,10 +147,10 @@ function Part({ n, title, intro, children }: { n: string; title: string; intro: 
 
 // Part 4: for each objective, every item tagged with it.
 function ObjectiveMap() {
-  const cols = lists.map((l) => ({ ...l, label: { AG: "Application gaps", TG: "Technical gaps", AN: "Application novelty", TN: "Technical novelty", C: "Contributions" }[l.prefix] }));
+  const cols = lists.map((l) => ({ ...l, label: { AG: "Application gaps", TG: "Technical gaps", AN: "Application novelty", TN: "Technical novelty", TC: "Technical contributions", MC: "Medical contributions" }[l.prefix] }));
   return (
     <div data-anchor="novelty/map" className="card-2d overflow-x-auto rounded-xl border border-black bg-white">
-      <table className="w-full min-w-[760px] border-collapse text-left text-sm">
+      <table className="w-full min-w-[960px] border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-black bg-cream">
             <th className="p-3 font-mono text-xs uppercase tracking-widest">Objective</th>
@@ -186,7 +194,7 @@ export function Novelty() {
     <div>
       <PageHeader
         title="Research gaps, novelty and contributions"
-        description="What is missing today, what this PhD does that is new, and what it will deliver. Application = the clinical and real-world side (hospitals, clinicians, Sri Lanka). Technical = the methods side (algorithms, models, evaluation). Each item has a short code; O tags link to its objective, and the last part maps everything by objective."
+        description="What is missing today, what this PhD does that is new, and what it will deliver. Application = the clinical and real-world side (hospitals, clinicians, Sri Lanka). Technical = the methods side (algorithms, models, evaluation). Contributions are split into technical (computer science) and medical (clinical). Each item has a short code; O tags link to its objective, and the last part maps everything by objective."
       />
 
       <Part n="1" title="Research gaps" intro="What existing work and practice do not yet provide. Each gap is addressed by one or more objectives.">
@@ -203,21 +211,10 @@ export function Novelty() {
         </div>
       </Part>
 
-      <Part n="3" title="Contributions" intro="What the thesis will deliver, and where each one is reported.">
-        <div data-anchor="novelty/contributions" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {contributions.map((c) => (
-            <article key={c.id} data-anchor={`novelty/contributions/${c.id}`} className="card-2d flex flex-col rounded-xl border border-black bg-lavender p-5">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="text-lg font-bold leading-snug">{c.title}</h3>
-                <Tags objectives={c.objectives} />
-              </div>
-              <p className="mt-3 text-[15px] leading-relaxed">{c.text}</p>
-              <p className="mt-auto border-t border-black/20 pt-3 font-mono text-xs text-neutral-700">
-                <span className="mt-3 block uppercase tracking-widest text-neutral-500">Output</span>
-                {c.output}
-              </p>
-            </article>
-          ))}
+      <Part n="3" title="Contributions" intro="What the thesis will deliver, shown separately for the two disciplines it serves: computer science (new methods) and medicine (benefit to patients, clinicians and hospitals). Each names the gaps it closes and the hypothesis that tests it.">
+        <div data-anchor="novelty/contributions" className="grid gap-6 lg:grid-cols-2">
+          <Column kind="Contribution · computer science" label="Technical contributions" sub="New algorithms, architectures, models and evaluation methods." color="bg-lavender" items={technicalContributions} anchor="novelty/technical-contributions" prefix="TC" />
+          <Column kind="Contribution · medicine" label="Medical contributions" sub="Benefits for patients, clinicians, hospitals and the health system." color="bg-butter" items={clinicalContributions} anchor="novelty/clinical-contributions" prefix="MC" />
         </div>
       </Part>
 

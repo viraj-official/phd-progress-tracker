@@ -202,43 +202,118 @@ export const technicalNovelty: Point[] = [
   },
 ];
 
-// What the thesis will deliver.
+// What the thesis will deliver, split into the two kinds of contribution a clinical-AI PhD makes.
+// answers: gap ids it closes (shown as chips). output: where it is reported.
 export type Contribution = Point & { output: string };
 
-export const contributions: Contribution[] = [
+// Computer-science contributions: new algorithms, architectures, models and evaluation methods.
+export const technicalContributions: Contribution[] = [
   {
-    id: "c1-framework",
-    title: "C1 · Uncertainty-aware multi-agent framework",
-    text: "Six specialist agents and an orchestrator with agent contracts, uncertainty propagation, a clinician interface and an append-only audit trail; every decision reconstructable.",
+    id: "tc-framework",
+    title: "Uncertainty-aware multi-agent framework",
+    text: "An architecture of six specialist agents and an orchestrator in which every agent reports a calibrated confidence, uncertainty is propagated across each hand-off, and every output and decision is written to an append-only audit trail.",
     objectives: ["O1"],
+    answers: ["handoffs"],
+    tests: ["H2"],
     output: "Framework code, agent contracts, error-propagation analysis (part of paper P2)",
   },
   {
-    id: "c2-escalation",
-    title: "C2 · Calibrated escalation policy (core contribution)",
-    text: "The rule deciding when the system may act and when it must defer, with a protocol for eliciting clinical error costs and the workload-safety analysis.",
+    id: "tc-escalation",
+    title: "Calibrated escalation policy (core contribution)",
+    text: "An algorithm that decides after every agent step whether to proceed, gather more evidence or refer to a clinician, using calibrated uncertainty, asymmetric error costs and limited clinician capacity, with a workload-versus-safety analysis.",
     objectives: ["O2"],
-    output: "Escalation policy, cost-elicitation protocol, flagship paper P2",
+    answers: ["deferral-chain"],
+    tests: ["H1"],
+    output: "Escalation policy and workload-safety analysis, flagship paper P2",
   },
   {
-    id: "c3-models",
-    title: "C3 · Data-efficient, calibrated and federated models",
-    text: "Calibrated MRI segmentation and classification, slide-level pathology and their fusion for small Sri Lankan data, and a federated training protocol across hospitals.",
+    id: "tc-models",
+    title: "Data-efficient, calibrated MRI and pathology models with missing-source fusion",
+    text: "Self-supervised and transfer-learned MRI segmentation and classification, slide-level pathology models and an MRI-pathology fusion that keeps working when a sequence or the slide is missing, all calibrated on small heterogeneous data.",
     objectives: ["O3"],
-    output: "Models for the agents, federated protocol, papers P1 (MRI), P3 (pathology & fusion), P4 (federated)",
+    answers: ["fusion", "label-efficient-confidence"],
+    tests: ["H3", "H4"],
+    output: "Models for the agents, papers P1 (MRI) and P3 (pathology & fusion)",
   },
   {
-    id: "c4-evaluation",
-    title: "C4 · Clinical evaluation and escalation-quality protocol",
-    text: "A reusable protocol and evidence on escalation appropriateness, missed escalations, workload, usability and trust, plus the surgical-planning proof of concept.",
+    id: "tc-federated",
+    title: "Federated training protocol that monitors calibration",
+    text: "A privacy-preserving protocol for training across a few small hospitals, with measurement of how aggregation and adaptation change calibration and therefore the behaviour of the escalation policy.",
+    objectives: ["O3"],
+    answers: ["federation-calibration"],
+    tests: ["H5"],
+    output: "Federated protocol and paper P4",
+  },
+  {
+    id: "tc-metrics",
+    title: "Metrics for the quality of escalation decisions",
+    text: "New evaluation measures, appropriate-escalation rate and missed-escalation rate, used with coverage and selective risk to judge whether a system referred the right cases.",
     objectives: ["O4"],
-    output: "Evaluation protocol, clinical evaluation paper P5, surgical-planning demonstrator",
+    answers: ["escalation-metrics"],
+    tests: ["H1", "H6"],
+    output: "Evaluation protocol (part of paper P5)",
+  },
+];
+
+// Medical / clinical contributions: benefits for patients, clinicians, hospitals and the health system.
+export const clinicalContributions: Contribution[] = [
+  {
+    id: "mc-registry",
+    title: "Sri Lanka's first imaging- and tissue-linked brain-tumour registry",
+    text: "A national registry linking MRI, biopsy slides, diagnoses and outcomes across neurosurgical units, with a de-identified benchmark that adds South Asian cases to the public record. It supports audit, continuity of care and future research whatever the AI results.",
+    objectives: ["O1", "O3"],
+    answers: ["no-registry"],
+    output: "Registry platform (WP1) and de-identified benchmark",
   },
   {
-    id: "c5-registry",
-    title: "C5 · National registry and benchmark",
-    text: "Sri Lanka's first imaging- and tissue-linked brain-tumour registry and a de-identified South Asian benchmark dataset.",
-    objectives: ["O1", "O3"],
-    output: "Registry platform (WP1) and de-identified benchmark",
+    id: "mc-decision-support",
+    title: "Safer decision support across the brain-tumour pathway",
+    text: "Support for intake, MRI reading, tissue diagnosis, combined WHO 2021 diagnosis, surgical planning and follow-up, in which the clinician keeps final authority and uncertain, unusual or high-risk cases are always sent to a specialist.",
+    objectives: ["O1", "O2"],
+    answers: ["all-or-nothing"],
+    output: "Working clinical prototype evaluated on local cases",
+  },
+  {
+    id: "mc-workload",
+    title: "Less specialist workload with a controlled error level",
+    text: "Evidence on how much review time neurosurgeons, neuroradiologists and neuropathologists can save on routine cases while missed referrals stay below an agreed level, targeting the shortage of these specialists.",
+    objectives: ["O2", "O4"],
+    answers: ["all-or-nothing"],
+    tests: ["H1", "H6"],
+    output: "Workload-safety results (papers P2 and P5)",
+  },
+  {
+    id: "mc-costs",
+    title: "Clinician-agreed costs of diagnostic error",
+    text: "A protocol for eliciting from clinicians how harmful each kind of mistake is at each decision (for example missing a high-grade tumour versus a false alarm), so the system's behaviour reflects clinical priorities rather than technical defaults.",
+    objectives: ["O2"],
+    answers: ["deferral-chain"],
+    output: "Cost-elicitation protocol and clinician-agreed thresholds",
+  },
+  {
+    id: "mc-local-validation",
+    title: "AI validated on Sri Lankan patients",
+    text: "MRI and pathology models tested on routine local scans and slides, including cases with missing sequences, giving the first evidence of how such tools perform for Sri Lankan patients where molecular testing is limited.",
+    objectives: ["O3"],
+    answers: ["real-data", "data-sharing"],
+    tests: ["H3", "H4", "H5"],
+    output: "Local validation results (papers P1, P3, P4)",
+  },
+  {
+    id: "mc-clinical-evaluation",
+    title: "Clinical evaluation with Sri Lankan clinicians",
+    text: "A multi-reader study measuring accuracy, review time, usability, trust and missed referrals, providing evidence on human-AI collaboration in brain-tumour care and in a low-resource setting.",
+    objectives: ["O4"],
+    answers: ["oversight"],
+    tests: ["H6"],
+    output: "Clinical evaluation paper P5",
+  },
+  {
+    id: "mc-surgical-planning",
+    title: "Surgical planning that shows its uncertainty",
+    text: "A proof-of-concept planning view with patient-specific 3D anatomy, structures to avoid and a candidate route, carrying anatomical uncertainty to the neurosurgeon, evaluated by neurosurgeons for plausibility and usefulness. The system never performs or controls surgery.",
+    objectives: ["O4"],
+    answers: ["planning"],
+    output: "Surgical-planning demonstrator and neurosurgeon evaluation",
   },
 ];
