@@ -218,8 +218,8 @@ export function Novelty() {
 
       <Part n="3" title="Contributions" intro="What the thesis will deliver, shown separately for the two disciplines it serves: computer science (new methods) and medicine (benefit to patients, clinicians and hospitals). Each names the gaps it closes and the hypothesis that tests it.">
         <div data-anchor="novelty/contributions" className="grid gap-6 lg:grid-cols-2">
-          <Column kind="Contribution · computer science" label="Technical contributions" sub="Theory, algorithms, models, software systems and evaluation methods." color="bg-lavender" items={technicalContributions} anchor="novelty/technical-contributions" prefix="TC" />
-          <Column kind="Contribution · medicine" label="Medical contributions" sub="Benefits for patients, clinicians, hospitals and the health system." color="bg-butter" items={clinicalContributions} anchor="novelty/clinical-contributions" prefix="MC" />
+          <Column kind="Contribution · computer science" label="Technical contributions" sub="What I give to computer science: the new architecture, algorithms, models, modules, software and metrics I propose, design and implement." color="bg-lavender" items={technicalContributions} anchor="novelty/technical-contributions" prefix="TC" />
+          <Column kind="Contribution · medicine" label="Medical contributions" sub="What the work gives to medicine: benefits for patients, clinicians, hospitals and the health system." color="bg-butter" items={clinicalContributions} anchor="novelty/clinical-contributions" prefix="MC" />
         </div>
       </Part>
 
