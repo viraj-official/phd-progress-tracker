@@ -1,12 +1,25 @@
 // Research → Gaps & Novelty page.
 // Taken from the proposal (v2), Chapter 1 (Table 1.1, Section 1.5), Chapter 2 (gap sections 2.3.10-2.6.11,
-// Table 2.5) and Chapter 3 (objective outputs) of the First Progress Review. Edit here to change the page.
+// Table 2.5) and Chapter 3 (objective outputs, hypotheses H1-H6) of the First Progress Review.
+// Edit here to change the page. Short codes (AG1, TG1, AN1, TN1, C1) come from each item's position in its list.
 
 export type Point = {
   id: string; // used in the share link
   title: string;
   text: string;
   objectives: string[]; // e.g. ["O2"]
+  answers?: string[]; // novelty only: ids of the gaps it answers
+  tests?: string[]; // novelty only: hypotheses that test it, e.g. ["H1"]
+};
+
+// Hypotheses, from Chapter 3 (Research Methodology).
+export const hypotheses: Record<string, string> = {
+  H1: "A calibrated, cost-derived escalation policy achieves a better workload-safety trade-off than fixed-confidence thresholding (RQ2).",
+  H2: "Propagating calibrated uncertainty between agents reduces downstream decision errors compared with hand-offs that ignore upstream reliability (RQ1).",
+  H3: "Self-supervised pre-training on unlabelled local MRI improves performance and calibration compared with transfer from public data alone (RQ3).",
+  H4: "Combining MRI and slide evidence gives higher diagnostic and grading concordance than the best single source (RQ3).",
+  H5: "Federated training improves generalisation over single-site training, stays within a margin of centralised training and preserves calibration (RQ3).",
+  H6: "The AI-assisted human-in-the-loop workflow reduces review time and improves usability and trust compared with an unassisted workflow, with non-inferior diagnostic performance (RQ4).",
 };
 
 // What is missing in practice: in hospitals, in Sri Lanka, for clinicians and patients.
@@ -96,36 +109,44 @@ export const applicationNovelty: Point[] = [
     title: "First uncertainty-aware multi-agent support for the whole brain-tumour pathway",
     text: "One framework covers intake, MRI, pathology, combined diagnosis, surgical planning and follow-up, with a clinician as the final validator at every step, built for a low-resource country (Sri Lanka).",
     objectives: ["O1"],
+    answers: ["all-or-nothing"],
   },
   {
     id: "national-registry",
     title: "Sri Lanka's first imaging- and tissue-linked brain-tumour registry",
     text: "A national registry linking MRI, slides and outcomes, with a de-identified benchmark that adds South Asian cases to the public record. It is useful to the hospitals whatever the research results.",
     objectives: ["O1", "O3"],
+    answers: ["no-registry"],
   },
   {
     id: "measurable-oversight",
     title: "Clinician oversight that is measurable and auditable",
     text: "No AI output can reach a clinical action without a clinician, and every AI output, escalation and clinician decision is written to an audit trail, so oversight can be shown to a regulator rather than just stated.",
     objectives: ["O1", "O4"],
+    answers: ["oversight"],
   },
   {
     id: "workload-safety",
     title: "Less specialist workload with a controlled error level",
     text: "Routine, confident cases are handled with less review while uncertain, unusual or high-risk cases go to the specialist, targeting the shortage of neurosurgeons, neuroradiologists and neuropathologists.",
     objectives: ["O2", "O4"],
+    answers: ["all-or-nothing"],
+    tests: ["H1"],
   },
   {
     id: "planning-uncertainty",
     title: "Surgical planning that shows its uncertainty",
     text: "Patient-specific 3D anatomy, structures to avoid and a candidate route, with the uncertainty of the anatomy carried through to the surgeon. The system plans and flags; it never performs or controls surgery.",
     objectives: ["O4"],
+    answers: ["planning"],
   },
   {
     id: "lmic-evaluation",
     title: "Clinical evaluation of a deferring AI in a low-resource setting",
     text: "A multi-reader evaluation with Sri Lankan clinicians measuring escalation appropriateness, missed escalations, workload, usability and trust, evidence that is currently missing for brain-tumour care and for LMICs.",
     objectives: ["O4"],
+    answers: ["oversight"],
+    tests: ["H6"],
   },
 ];
 
@@ -136,36 +157,48 @@ export const technicalNovelty: Point[] = [
     title: "Calibrated escalation over a chain of dependent decisions",
     text: "An escalation rule that uses calibrated uncertainty and clinician-elicited, asymmetric error costs under limited clinician capacity, with three actions (proceed, gather more evidence, escalate) and four triggers (low confidence, novelty, conflict, mandatory review), applied after every agent step.",
     objectives: ["O2"],
+    answers: ["deferral-chain"],
+    tests: ["H1"],
   },
   {
     id: "uncertainty-contract",
     title: "Uncertainty as part of the contract between agents",
     text: "Every agent must report a calibrated confidence, and that uncertainty is propagated across each hand-off (for example by passing sampled segmentations to the classifier), so a doubtful upstream result produces a doubtful downstream one (hypothesis H2).",
     objectives: ["O1"],
+    answers: ["handoffs"],
+    tests: ["H2"],
   },
   {
     id: "workload-safety-frontier",
     title: "Workload-versus-safety frontier for selective autonomy",
     text: "Selective autonomy is evaluated with risk-coverage curves and an explicit workload-safety frontier, compared with fixed-threshold baselines (hypothesis H1).",
     objectives: ["O2"],
+    answers: ["deferral-chain"],
+    tests: ["H1"],
   },
   {
     id: "federated-calibration",
     title: "Calibration tracked through federation and adaptation",
     text: "Calibration is treated as a quantity to monitor, not assume: the study measures how federated aggregation and domain adaptation across small Sri Lankan sites change calibration and the behaviour of the escalation policy (hypothesis H5).",
     objectives: ["O3"],
+    answers: ["federation-calibration", "data-sharing"],
+    tests: ["H5"],
   },
   {
     id: "missing-source-fusion",
     title: "Data-efficient, missing-source-tolerant MRI-pathology fusion on local data",
     text: "Self-supervised pre-training on unlabelled local MRI (H3), training with sequence dropout, and fusion that degrades gracefully when pathology or sequences are missing (H4), tested on real local cases rather than simulated gaps.",
     objectives: ["O3"],
+    answers: ["fusion", "label-efficient-confidence", "real-data"],
+    tests: ["H3", "H4"],
   },
   {
     id: "escalation-quality-metrics",
     title: "Metrics for escalation quality",
     text: "New evaluation measures: appropriate-escalation rate (escalated cases the clinician changed) and missed-escalation rate (autonomous cases experts judge needed a clinician) as the primary safety indicator, alongside coverage and selective risk.",
     objectives: ["O4"],
+    answers: ["escalation-metrics"],
+    tests: ["H6"],
   },
 ];
 
