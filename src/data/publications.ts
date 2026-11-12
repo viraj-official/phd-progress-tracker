@@ -2,9 +2,13 @@
 // Put each draft PDF in public/docs/ and keep the editable source in D:\Phd\6 Paper.
 import type { PhdDocument } from "./documents";
 
-export const publications: PhdDocument[] = [
+// short: the name shown on the Overview card ("Paper 1 · <short>").
+export type Publication = PhdDocument & { short?: string };
+
+export const publications: Publication[] = [
   {
     id: "review-ai-brain-tumour",
+    short: "Narrative review: AI across the brain tumour care pathway",
     title: "Artificial Intelligence Across the Brain Tumour Care Pathway: A Narrative Review",
     description:
       "Narrative review of AI for brain tumours along the clinical pathway: MRI analysis, computational pathology, integration of evidence, data-efficient and federated learning, surgery and clinician-AI interaction. Written from the Paper Bank (221 references).",

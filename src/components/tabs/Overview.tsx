@@ -7,6 +7,7 @@ import { publications } from "@/data/publications";
 import { Label, pastels } from "../ui";
 import { ShareLink } from "../deeplink";
 import { StatusMark } from "./Documents";
+import { PdfButton } from "../PdfViewer";
 
 const fmt = (d: string) =>
   new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -122,35 +123,60 @@ function ProgressReview() {
 
 /* ---------- my papers ---------- */
 function MyPapers() {
-  const sorted = [...publications].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  const sorted = [...publications].sort((a, b) => (a.date ?? "").localeCompare(b.date ?? ""));
   return (
     <div data-anchor="overview/my-papers" className="card-2d rounded-xl border border-black bg-white p-5 sm:p-6">
-      <CardHead title={`My papers (${publications.length})`} href="publications" anchor="overview/my-papers" />
-      <ul className="mt-4 space-y-4">
-        {sorted.map((d) => {
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h3 className="text-lg font-bold">Papers</h3>
+        <span className="flex items-center gap-3 font-mono text-xs">
+          <span className="text-neutral-500">
+            {publications.length} paper{publications.length === 1 ? "" : "s"}
+          </span>
+          <ShareLink to="overview/my-papers" label="" className="px-2" />
+          <a href="#publications" className="uppercase tracking-wider underline underline-offset-4 hover:no-underline">
+            Open →
+          </a>
+        </span>
+      </div>
+      <ul className="mt-4 divide-y divide-neutral-200">
+        {sorted.map((d, i) => {
           const done = d.parts.filter((p) => p.status === "done").length;
           const next = d.parts.find((p) => p.status !== "done");
+          const pdf = d.files?.[0];
           return (
-            <li key={d.id}>
-              <a href={`#publications/${d.id}`} className="group flex gap-3">
-                <span className="pt-1">
-                  <StatusMark status={d.status} size={20} />
+            <li key={d.id} className="grid gap-4 py-4 first:pt-0 last:pb-0 md:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] md:items-center md:gap-10">
+              <div className="flex min-w-0 gap-3">
+                <span className="pt-0.5">
+                  <StatusMark status={d.status} size={22} />
                 </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block font-bold leading-snug group-hover:underline">{d.title}</span>
-                  <span className="mt-1 flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-wider">
+                <div className="min-w-0">
+                  <a href={`#publications/${d.id}`} className="block text-[17px] font-bold leading-snug hover:underline">
+                    Paper {i + 1} · {d.short ?? d.title}
+                  </a>
+                  <p className="mt-2 flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-wider">
                     <span className="rounded-xl border border-black bg-sky px-2 py-0.5">{d.statusText}</span>
                     {d.date && <span className="text-neutral-500">{fmt(d.date)}</span>}
-                    <span className="text-neutral-500">
-                      {done}/{d.parts.length} steps done
-                    </span>
-                  </span>
-                  <span className="mt-2 block">
-                    <Bar pct={Math.round((done / d.parts.length) * 100)} />
-                  </span>
-                  {next && <span className="mt-1.5 block text-sm text-neutral-600">Next: {next.name}</span>}
-                </span>
-              </a>
+                  </p>
+                  {next && <p className="mt-2 text-[15px] text-neutral-600">Next: {next.name}</p>}
+                </div>
+              </div>
+              <div className="min-w-0">
+                <p className="font-mono text-xs uppercase tracking-wider text-neutral-500">
+                  {done}/{d.parts.length} steps done
+                </p>
+                <div className="mt-2">
+                  <Bar pct={Math.round((done / d.parts.length) * 100)} />
+                </div>
+                {pdf && (
+                  <PdfButton
+                    url={pdf.url}
+                    title={d.title}
+                    className="mt-3 inline-flex items-center gap-2 rounded-xl border border-black bg-lavender px-4 py-2 font-mono text-sm text-black hover:bg-white"
+                  >
+                    ▸ Read the paper (PDF, {pdf.size})
+                  </PdfButton>
+                )}
+              </div>
             </li>
           );
         })}
