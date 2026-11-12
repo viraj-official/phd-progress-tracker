@@ -1,4 +1,4 @@
-import { documents, type Status } from "@/data/documents";
+import { documents, type PhdDocument, type Status } from "@/data/documents";
 import { Label, PageHeader } from "../ui";
 import { ShareLink, slug } from "../deeplink";
 import { PdfButton } from "../PdfViewer";
@@ -43,18 +43,32 @@ export function StatusMark({ status, size = 16 }: { status: Status; size?: numbe
 }
 
 export function Documents() {
-  const sorted = [...documents].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  return (
+    <DocList
+      items={documents}
+      base="documents"
+      title="PhD Documents"
+      description="Formal documents for the PhD at the University of Sri Jayewardenepura, newest first, with the status of each part. Finished documents can be viewed here."
+      unit="document"
+    />
+  );
+}
+
+// The card list shared by Documents and Papers: status legend, then one card per item
+// with its checklist and files.
+export function DocList({ items, base, title, description, unit }: { items: PhdDocument[]; base: string; title: string; description: string; unit: string }) {
+  const sorted = [...items].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
   const counts = (["done", "waiting", "progress", "pending"] as Status[]).map((s) => ({
     s,
-    n: documents.filter((d) => d.status === s).length,
+    n: items.filter((d) => d.status === s).length,
   }));
 
   return (
     <div>
       <PageHeader
-        title="PhD Documents"
-        description="Formal documents for the PhD at the University of Sri Jayewardenepura, newest first, with the status of each part. Finished documents can be viewed here."
-        aside={`${documents.length} documents`}
+        title={title}
+        description={description}
+        aside={`${items.length} ${unit}${items.length === 1 ? "" : "s"}`}
       />
 
       {/* legend + counts */}
@@ -74,7 +88,7 @@ export function Documents() {
           return (
             <li
               key={d.id}
-              data-anchor={`documents/${d.id}`}
+              data-anchor={`${base}/${d.id}`}
               className="grid gap-6 rounded-xl border border-black bg-white p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_13rem]"
             >
               {/* title + status */}
@@ -94,7 +108,7 @@ export function Documents() {
                   </div>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-neutral-600">{d.description}</p>
-                <ShareLink to={`documents/${d.id}`} label="Copy link to this document" className="mt-4" />
+                <ShareLink to={`${base}/${d.id}`} label={`Copy link to this ${unit}`} className="mt-4" />
               </div>
 
               {/* checklist */}
@@ -149,7 +163,7 @@ export function Documents() {
                       <Label>Files ({files.length})</Label>
                       <ul className="mt-2 space-y-2">
                         {files.map((f) => (
-                          <li key={f.url} data-anchor={`documents/${d.id}/${slug(f.label)}`} className="flex items-stretch gap-1.5">
+                          <li key={f.url} data-anchor={`${base}/${d.id}/${slug(f.label)}`} className="flex items-stretch gap-1.5">
                             <PdfButton
                               url={f.url}
                               title={f.name ?? f.label}
@@ -158,7 +172,7 @@ export function Documents() {
                               <span className="min-w-0">▸ {f.name ?? "View document"}</span>
                               <span className="shrink-0 text-xs opacity-70">View</span>
                             </PdfButton>
-                            <ShareLink to={`documents/${d.id}/${slug(f.label)}`} label="" className="px-2" />
+                            <ShareLink to={`${base}/${d.id}/${slug(f.label)}`} label="" className="px-2" />
                           </li>
                         ))}
                       </ul>

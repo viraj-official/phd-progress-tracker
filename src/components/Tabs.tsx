@@ -11,6 +11,7 @@ import { Timeline } from "./tabs/Timeline";
 import { Updates } from "./tabs/Updates";
 import { LogBook } from "./tabs/LogBook";
 import { Documents } from "./tabs/Documents";
+import { Papers } from "./tabs/Papers";
 import { PaperBank } from "./tabs/PaperBank";
 import { Team } from "./tabs/Team";
 import { Profile } from "./tabs/Profile";
@@ -41,6 +42,7 @@ const GROUPS: Group[] = [
     ],
   },
   { id: "documents", label: "Documents", views: [{ id: "documents", label: "Documents" }] },
+  { id: "publications", label: "Papers", views: [{ id: "publications", label: "Papers" }] },
   {
     id: "people",
     label: "People",
@@ -220,6 +222,7 @@ export function Tabs() {
             {view === "updates" && <Updates />}
             {view === "logbook" && <LogBook />}
             {view === "documents" && <Documents />}
+            {view === "publications" && <Papers />}
             {view === "supervisors" && <Team path={path.slice(1)} go={(p) => go(["supervisors", ...p])} />}
             {view === "profile" && <Profile />}
           </div>

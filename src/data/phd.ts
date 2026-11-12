@@ -139,6 +139,15 @@ export type Update = {
 // Shown newest first (sorted by date automatically).
 export const updates: Update[] = [
   {
+    date: "2026-11-12",
+    title: "First paper drafted: narrative review of AI across the brain tumour care pathway",
+    tag: "Milestone",
+    items: [
+      "Wrote a narrative review (version 0.2, about 7,000 words, 221 references) from the Paper Bank, covering MRI analysis, computational pathology, combining evidence, data-efficient and federated learning, surgery and how clinicians work with AI.",
+      "The draft is in the new Papers tab for supervisor review. Next: add co-authors and declarations, then choose a target journal.",
+    ],
+  },
+  {
     date: "2026-11-11",
     title: "Paper review spreadsheets finalised",
     tag: "Progress",
