@@ -38,18 +38,18 @@ export const publications: Publication[] = [
   },
   {
     id: "conceptual-framework",
-    short: "Conceptual framework: uncertainty-aware, human-in-the-loop AI",
-    title: "A Conceptual Framework for Uncertainty-Aware, Human-in-the-Loop AI in Brain Tumour Care",
+    short: "Risk-gated escalation for brain tumour decision support",
+    title: "Risk-Gated Escalation for Safe Human–AI Collaboration in Brain Tumour Decision Support: Design and Feasibility Evaluation",
     description:
-      "Conceptual paper. Compares the approaches in the 559-paper Paper Bank decision by decision, selects the best-supported one for each, and combines them into a framework that decides case by case when an AI output may be released and when a clinician must decide. Includes a practical deployment plan, a reference implementation with 17 automated tests, and a feasibility study on public brain tumour MRI (233 patients).",
+      "Compares the approaches in the 559-paper Paper Bank decision by decision, selects the best-supported one for each, and combines them into a framework that decides case by case when an AI output may be released and when a clinician must decide. Includes a practical deployment plan, a reference implementation with 17 automated tests, and a feasibility study on public brain tumour MRI (233 patients).",
     status: "progress",
     statusText: "Version 1.0 · awaiting supervisor approval",
     date: "2026-11-18",
     files: [
       {
         name: "Version 1.0 (about 10,700 words, 52 pages)",
-        url: "/docs/Paper_Conceptual_Framework_v1.0.pdf",
-        label: "Paper_Conceptual_Framework_v1.0.pdf",
+        url: "/docs/Paper_Risk_Gated_Escalation_v1.0.pdf",
+        label: "Paper_Risk_Gated_Escalation_v1.0.pdf",
         size: "1.5 MB",
       },
     ],
