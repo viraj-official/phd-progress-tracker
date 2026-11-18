@@ -113,9 +113,9 @@ export const applicationNovelty: Point[] = [
     answers: ["all-or-nothing"],
   },
   {
-    id: "national-registry",
-    title: "Sri Lanka's first imaging- and tissue-linked brain-tumour registry",
-    text: "A national registry linking MRI, slides and outcomes, with a de-identified benchmark that adds South Asian cases to the public record. It is useful to the hospitals whatever the research results.",
+    id: "linked-registry",
+    title: "An imaging- and tissue-linked brain-tumour registry",
+    text: "A registry linking MRI, slides and outcomes, with a de-identified benchmark that adds South Asian cases to the public record. It is useful to the hospitals whatever the research results.",
     objectives: ["O1", "O3"],
     answers: ["no-registry"],
   },
@@ -324,8 +324,8 @@ export const technicalContributions: Contribution[] = [
 export const clinicalContributions: Contribution[] = [
   {
     id: "mc-registry",
-    title: "Sri Lanka's first imaging- and tissue-linked brain-tumour registry",
-    text: "A national registry linking MRI, biopsy slides, diagnoses and outcomes across neurosurgical units, with a de-identified benchmark that adds South Asian cases to the public record. It supports audit, continuity of care and future research whatever the AI results.",
+    title: "An imaging- and tissue-linked brain-tumour registry",
+    text: "A registry linking MRI, biopsy slides, diagnoses and outcomes across the participating neurosurgical units, with a de-identified benchmark that adds South Asian cases to the public record. It supports audit, continuity of care and future research whatever the AI results.",
     objectives: ["O1", "O3"],
     answers: ["no-registry"],
     output: "Registry platform (WP1) and de-identified benchmark",
@@ -358,7 +358,7 @@ export const clinicalContributions: Contribution[] = [
   {
     id: "mc-local-validation",
     title: "AI validated on Sri Lankan patients",
-    text: "MRI and pathology models tested on routine local scans and slides, including cases with missing sequences, giving the first evidence of how such tools perform for Sri Lankan patients where molecular testing is limited.",
+    text: "MRI and pathology models tested on routine local scans and slides, including cases with missing sequences, showing how such tools perform for Sri Lankan patients where molecular testing is limited.",
     objectives: ["O3"],
     answers: ["real-data", "data-sharing"],
     tests: ["H3", "H4", "H5"],
